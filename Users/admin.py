@@ -1,9 +1,59 @@
+def manage_staff():
+    print("Managing staff...")
+
+def view_sales_report():
+    print("Viewing sales report...")
+
+def view_feedback():
+    print("Viewing feedback...")
+
+def update_profile():
+    print("Updating profile...")
+    
 def main(): 
     # Start writing your code here
-    pass
+    """
+    1. Administrator
+        - Manage staff - Manager, Chef (Add, Edit, Delete)
+        - View sales report based on month, chef etc.
+        - View feedback sent by customers.
+        - Update own profile.
+    """
+    
+    # Mapping actions to corresponing action number
+    actions = {
+        "1": manage_staff,
+        "2": view_sales_report,
+        "3": view_feedback,
+        "4": update_profile,
+        "5": exit
+    }
 
-def something():
-    pass
-    if something: 
-        pass
-something()
+    # looping until user chooses a valid action
+    while True: 
+        # printing user instructions
+        print("""
+        Choose an action:
+        1. Manage staff
+        2. View sales report
+        3. View feedback
+        4. Update profile
+        5. Exit
+        """)
+
+        # getting user choice
+        choice = input("Enter the number of the action you want to perform: ")
+
+        # getting corresponing action according to choice 
+        if action := actions.get(choice, None):
+            action()
+        
+        # if choice is not valid
+        else: 
+            print("Invalid choice try again")
+        
+
+
+# for unit testing
+if __name__ == "__main__":
+    main()

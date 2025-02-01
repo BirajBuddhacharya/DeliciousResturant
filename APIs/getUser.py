@@ -8,7 +8,7 @@ def GetUser(email, ):
             if not in Users database: 
                 None
     """
-    with open('Databases/users.csv', 'r') as file: 
+    with open('Databases/users.txt', 'r') as file: 
         for lineCount, line in enumerate(file): 
             # skipping the header of the table
             if lineCount == 0: 

@@ -18,6 +18,7 @@ def main():
             break
         
         # incrementing attempt count (for only 3 attempts feature)
+        print(f"{3-attemptCount} attempts left")
         attemptCount += 1   
     
     # warning too many attempts

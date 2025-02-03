@@ -8,7 +8,7 @@ def view_feedback():
     print("Viewing feedback...")
 
 def update_profile():
-    print("Updating profile...")
+    print("Updating profile...") 
     
 def main(): 
     # Start writing your code here

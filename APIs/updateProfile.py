@@ -1,30 +1,44 @@
-import os
+def UpdateProfile(email, **updatekwargs): 
+    AttributesPositions = {
+        'updateName': 1, 
+        'updatePassword': 2,
+        'updateEmail': 3
+    }
+    # exiting early if the updatekwargs doesn't meet the requirements
+    for key in updatekwargs: 
+        if key not in AttributesPositions: 
+            print("Invalid key")
+            return
+        
+    # reading file
+    with open("Databases/users.txt", 'r') as file: 
+        lines = file.readlines()
+    
+    # finding the mentioned email and replacing with updated data
+    for index, line in enumerate(lines): 
+        line = line.split(',')
+        if line[AttributesPositions['updateEmail']] == email: 
+            for key, value in updatekwargs.items():
+                line[AttributesPositions[key]] = value
 
-def update_profile(email, new_data):
-    file_path = os.path.join(os.path.dirname(__file__), '../Databases/users.txt')
-    
-    try:
-        with open(file_path, 'r') as file:
-            lines = file.readlines()
+            # exiting loop early after email if found
+            line = ','.join(line)
+                            
+            # saving the updated line
+            lines[index] = line
+            break
         
-        updated_lines = []
-        for line in lines:
-            if line.startswith(email):
-                updated_line = f"{email},{new_data}\n"
-                updated_lines.append(updated_line)
-            else:
-                updated_lines.append(line)
-        
-        with open(file_path, 'w') as file:
-            file.writelines(updated_lines)
-        
-        print("Profile updated successfully.")
-    except FileNotFoundError:
-        print("The users file does not exist.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    # if email is not found
+    else: 
+        print("Email not found")
+        return
 
-# Example usage
-update_profile('user@example.com', 'new_data')
+    # saving the updated user file
+    with open('Databases/users.txt', 'w') as file: 
+        for line in lines: 
+            file.write(line)
     
-    
+
+# for unit api testing
+if __name__ == "__main__": 
+    UpdateProfile("alice.brown@example.com", updateEmail = 'anush@gmail.com')

@@ -1,6 +1,6 @@
 id,name,password,email,role
 1,John Doe,pass123,anush@gmail.com,admin
-2,Jane Smith,secure456,jane.smith@example.com,user
-3,Bob Johnson,qwerty789,bob.johnson@example.com,moderator
+2,Jane Smith,secure456,jane.smith@example.com,admin
+3,Bob Johnson,qwerty789,bob.johnson@example.com,chef
 4,Alice Brown,alice123,anush@gmail.com,user
-5,Charlie Davis,pass987,charlie.davis@example.com,admin
+5,Charlie Davis,pass987,charlie.davis@example.com,manager

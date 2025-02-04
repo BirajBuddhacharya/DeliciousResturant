@@ -1,4 +1,5 @@
 from APIs.getUser import GetUser
+from utils.saveCurrentUser import SaveCurrentUser
    
 def Login(email: str, password: str): 
     """
@@ -20,6 +21,7 @@ def Login(email: str, password: str):
         
         # if password matches
         if password == correctPassword: 
+            SaveCurrentUser(name, email, role)
             return (True, role)
             
         # if password doesn't match with passowrd in Users.csv 

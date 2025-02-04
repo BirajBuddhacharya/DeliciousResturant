@@ -18,6 +18,8 @@ def HandleRole(role):
         'customer': customer,
         'manager': manager
     }
+    # formating role
+    role = "".join(role.split()) # removing any linen breaks and white spaces
     
     # if the role is found
     if action := roles.get(role, None):
@@ -26,3 +28,5 @@ def HandleRole(role):
     # if the role is not found
     else: 
         print("Role not found")
+        
+

@@ -1,3 +1,6 @@
+from APIs.updateProfile import UpdateProfile
+from APIs.getCurrentUser import GetCurrentUser
+
 def manage_staff():
     print("Managing staff...")
 
@@ -8,7 +11,39 @@ def view_feedback():
     print("Viewing feedback...")
 
 def update_profile():
-    print("Updating profile...") 
+    # geting current user mail from cookie
+    _, email, _ = GetCurrentUser()
+    
+    # Presenting the user with options to update profile
+    print("""
+    Choose an option to update:
+    1. Change name
+    2. Change email
+    3. Change password
+    """)
+
+    # Getting user choice
+    choice = input("Enter the number of the option you want to update: ")
+
+    # Initializing updatekwargs dictionary
+    updatekwargs = {}
+
+    match choice:
+        case "1":
+            new_name = input("Enter new name: ")
+            updatekwargs["updateName"] = new_name
+        case "2":
+            new_email = input("Enter new email: ")
+            updatekwargs["updateEmail"] = new_email
+        case "3":
+            new_password = input("Enter new password: ")
+            updatekwargs["updatePassword"] = new_password
+        case _:
+            print("Invalid choice. No updates made.")
+            return
+
+    # Calling UpdateProfile with email and updatekwargs
+    UpdateProfile(email, **updatekwargs)
     
 def main(): 
     # Start writing your code here
@@ -56,4 +91,4 @@ def main():
 
 # for unit testing
 if __name__ == "__main__":
-    main()
+    update_profile()

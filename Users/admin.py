@@ -1,8 +1,59 @@
 from APIs.updateProfile import UpdateProfile
 from APIs.getCurrentUser import GetCurrentUser
+from utils.table import Table 
 
 def manage_staff():
     print("Managing staff...")
+    users = Table().loadData('users.txt')
+    
+    # printing all users
+    print(users)
+    
+    while True:
+        print("""
+        Choose an action:
+        a. Add staff
+        e. Edit staff
+        d. Delete staff
+        q. Quit
+        """)
+        
+        action = input("Enter the letter of the action you want to perform: ").lower()
+        
+        match action:
+            case 'a':
+                # Logic for adding staff
+                name = input("Enter name of the new staff: ")
+                role = input("Enter role of the new staff: ")
+                users.append({"name": name, "role": role})
+                Table().saveData('users.txt', users)
+                print(f"Added new staff: {name}, Role: {role}")
+            case 'e':
+                # Logic for editing staff
+                name = input("Enter name of the staff to edit: ")
+                for user in users:
+                    if user["name"] == name:
+                        new_name = input("Enter new name: ")
+                        new_role = input("Enter new role: ")
+                        user["name"] = new_name
+                        user["role"] = new_role
+                        Table().saveData('users.txt', users)
+                        print(f"Updated staff: {new_name}, Role: {new_role}")
+                        break
+                else:
+                    print("Staff not found.")
+            case 'd':
+                # Logic for deleting staff
+                name = input("Enter name of the staff to delete: ")
+                users = [user for user in users if user["name"] != name]
+                Table().saveData('users.txt', users)
+                print(f"Deleted staff: {name}")
+            case 'q':
+                # Quit the loop
+                break
+            case _:
+                print("Invalid choice. Try again.")
+    
 
 def view_sales_report():
     print("Viewing sales report...")

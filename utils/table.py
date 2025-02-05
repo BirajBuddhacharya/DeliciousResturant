@@ -1,17 +1,44 @@
 import os
 
-class Table: 
+class Table:   
     """
-
+        A class to represent a table structure with headers and rows of data.
+            Attributes
+            ----------
+                tableData : dict
+                    A dictionary to store table headers and body data.
+                    structure: 
+                        self.tableData = {
+                            'header': (header1, header2), 
+                            'body': [(data1, data2), (data3, data4)]
+                        }
+                columnsLen : int
+                    The number of columns in the table. (Dynamically added on self.addHeader())
+            Methods
+            -------
+                __init__():
+                    Initializes the table with empty headers and body.
+                addHeader(*headers):
+                    Adds headers to the table.
+                addRow(*data):
+                    Adds a row of data to the table.
+                loadData(tableName):
+                    Loads table data from a file.
+                __str__():
+                    Returns a string representation of the table.
+                    
     """
     def __init__(self): 
         self.tableData = {'header': [], 'body': []} # table data storage
         
     def addHeader(self, *headers): 
         self.tableData['header'] = headers
+        
+        # assigning no of columns
         self.columnsLen =  len(headers)
         
     def addRow(self, *data): 
+        # checking if row data matches the number of header
         if len(data) != self.columnsLen: 
             print("No of data must match column. No data added")
             return 

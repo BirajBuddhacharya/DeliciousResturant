@@ -57,9 +57,19 @@ def manage_staff():
 
 def view_sales_report():
     print("Viewing sales report...")
+    
+    salesReport= Table().loadData("salesReport.txt")
+    
+    print(salesReport)
 
 def view_feedback():
-    print("Viewing feedback...")
+    print("feedbacks....")
+    
+    #loading feedbacks
+    feedbacks = Table().loadData("feedbacks.txt")
+    
+    # displaying feedbacks
+    print(feedbacks)
 
 def update_profile():
     # geting current user mail from cookie
@@ -142,4 +152,4 @@ def main():
 
 # for unit testing
 if __name__ == "__main__":
-    update_profile()
+    view_feedback()

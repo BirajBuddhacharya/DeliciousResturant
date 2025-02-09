@@ -4,27 +4,25 @@ class Table:
     """
         A class to represent a table structure with headers and rows of data.
             Attributes
-            ----------
-                tableData : dict
+                -> tableData : dict
                     A dictionary to store table headers and body data.
                     structure: 
                         self.tableData = {
                             'header': (header1, header2), 
                             'body': [(data1, data2), (data3, data4)]
                         }
-                columnsLen : int
+                -> columnsLen : int
                     The number of columns in the table. (Dynamically added on self.addHeader())
             Methods
-            -------
-                __init__():
+                -> __init__():
                     Initializes the table with empty headers and body.
-                addHeader(*headers):
+                -> addHeader(*headers):
                     Adds headers to the table.
-                addRow(*data):
+                -> addRow(*data):
                     Adds a row of data to the table.
-                loadData(tableName):
+                -> loadData(tableName):
                     Loads table data from a file.
-                __str__():
+                -> __str__():
                     Returns a string representation of the table.
                     
     """
@@ -68,8 +66,24 @@ class Table:
             # handling table body
             else: 
                 self.addRow(*line)
-                
+    
+    def saveData(self, fileName): 
+        saveStr = ''
         
+        # saving head
+        saveStr += ','.join(self.tableData['header'])
+        # adding line break 
+        saveStr += '\n'
+        
+        for data in self.tableData['body']: 
+            saveStr += ','.join(data)
+            # line break 
+            saveStr += '\n'
+            
+        # saving into file 
+        with open(fileName, 'w') as fp:
+            fp.write(saveStr) 
+            
     def __str__(self):  
         if not self.tableData['header'] or not self.tableData['body']:
             return "Table is empty."
@@ -90,10 +104,19 @@ class Table:
         return_str += f"\n{separator}"
 
         return return_str
+    
+    def append(self, *appendargs):
+        if len(appendargs) != self.columnsLen: 
+            print("args and columns len doesn't match. No change done") 
+            return 
+        
+        self.tableData['body'].append(appendargs)
+        
      
 # unit testing
 if __name__ == "__main__": 
     table = Table()
     table.loadData('users.txt')
     print(table)
+    table.saveData('usersTest.txt')
 

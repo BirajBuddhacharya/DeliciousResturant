@@ -1,6 +1,6 @@
 from APIs.updateProfile import UpdateProfile
 from APIs.getCurrentUser import GetCurrentUser
-from utils.table import Table 
+from utils.table import Table
 
 def manage_staff():
     print("Managing staff...")
@@ -63,13 +63,15 @@ def view_sales_report():
     print(salesReport)
 
 def view_feedback():
-    print("feedbacks....")
+    # making table object
+    table = Table()
     
-    #loading feedbacks
-    feedbacks = Table().loadData("feedbacks.txt")
+    # loading feedback table
+    table.loadData('feedbacks.txt')
     
     # displaying feedbacks
-    print(feedbacks)
+    print("Viewing feedback...")
+    print(table)
 
 def update_profile():
     # geting current user mail from cookie

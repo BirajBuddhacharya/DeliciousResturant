@@ -36,7 +36,7 @@ class Table:
         self.columnsLen =  len(headers)
         
     def addRow(self, *data): 
-        # checking if row data matches the number of header
+        # returning early if row length doesnt match 
         if len(data) != self.columnsLen: 
             print("No of data must match column. No data added")
             return 
@@ -118,5 +118,4 @@ if __name__ == "__main__":
     table = Table()
     table.loadData('users.txt')
     print(table)
-    table.saveData('usersTest.txt')
 

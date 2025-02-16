@@ -8,8 +8,9 @@ def Login(email: str, password: str):
             email -> email of the user
             password -> password of the user
         returns: 
-            (isAuthenticated, role) -> (True, role) if the user is loged in successfully
-                           (False, None) if the user is not loged in successfully
+            (isAuthenticated, role) -> 
+                (True, role) if the user is loged in successfully
+                (False, None) if the user is not loged in successfully
     """
    # getting user Data according to email from Users.csv
     userData = GetUser(email)

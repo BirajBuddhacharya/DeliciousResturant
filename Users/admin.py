@@ -1,10 +1,11 @@
 from APIs.updateProfile import UpdateProfile
 from APIs.getCurrentUser import GetCurrentUser
 from utils.table import Table
+from utils.clear import Clear
 
 def manage_staff():
     print("Managing staff...")
-    users = Table().loadData('users.txt')
+    users = Table().loadData('Databases/users.txt')
     
     # printing all users
     print(users)
@@ -20,13 +21,15 @@ def manage_staff():
         
         action = input("Enter the letter of the action you want to perform: ").lower()
         
+        Clear() # clearing previous outputs
         match action:
             case 'a':
                 # Logic for adding staff
                 name = input("Enter name of the new staff: ")
+                password = input("Enter password of the new staff: ")
+                email = input("Enter email of the new staff: ")
                 role = input("Enter role of the new staff: ")
-                users.append({"name": name, "role": role})
-                Table().saveData('users.txt', users)
+                users.append(name, password, email, role)
                 print(f"Added new staff: {name}, Role: {role}")
             case 'e':
                 # Logic for editing staff
@@ -52,6 +55,7 @@ def manage_staff():
                 # Quit the loop
                 break
             case _:
+                Clear()
                 print("Invalid choice. Try again.")
     
 
@@ -102,6 +106,7 @@ def update_profile():
             new_password = input("Enter new password: ")
             updatekwargs["updatePassword"] = new_password
         case _:
+            Clear()
             print("Invalid choice. No updates made.")
             return
 
@@ -128,7 +133,7 @@ def main():
     }
 
     # looping until user chooses a valid action
-    while True: 
+    while True:      
         # printing user instructions
         print("""
         Choose an action:
@@ -144,10 +149,13 @@ def main():
 
         # getting corresponing action according to choice 
         if action := actions.get(choice, None):
+            Clear() # clearing previous outputs
             action()
+            
         
         # if choice is not valid
         else: 
+            Clear() # clearing previous outputs
             print("Invalid choice try again")
         
 

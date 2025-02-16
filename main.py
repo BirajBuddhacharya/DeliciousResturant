@@ -1,5 +1,6 @@
 from utils.handleRole import HandleRole
 from utils.login import Login
+from utils.clear import Clear
 
 def main(): 
     # attempt counter
@@ -16,6 +17,9 @@ def main():
         if isAuthenticated: 
             HandleRole(role)
             break
+        else: 
+            Clear()
+            print("Incorrect email or password")
         
         # incrementing attempt count (for only 3 attempts feature)
         print(f"{3-attemptCount} attempts left")

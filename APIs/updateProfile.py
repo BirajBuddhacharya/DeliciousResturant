@@ -11,7 +11,7 @@ def UpdateProfile(email, **updatekwargs):
             return
         
     # reading file
-    with open("Databases/users.txt", 'r') as file: 
+    with open("Database/users.txt", 'r') as file: 
         lines = file.readlines()
     
     # finding the mentioned email and replacing with updated data
@@ -34,7 +34,7 @@ def UpdateProfile(email, **updatekwargs):
         return
 
     # saving the updated user file
-    with open('Databases/users.txt', 'w') as file: 
+    with open('Database/users.txt', 'w') as file: 
         for line in lines: 
             file.write(line)
     

@@ -29,7 +29,7 @@ def manage_staff():
                 password = input("Enter password of the new staff: ")
                 email = input("Enter email of the new staff: ")
                 role = input("Enter role of the new staff: ")
-                users.addRow(None, email, password, email, role) # neglecting id ( id will be removed in future version )
+                users.append(None, email, password, email, role) # neglecting id ( id will be removed in future version )
                 users.saveData('users.txt')
                 print(f"Added new staff: {email}, Role: {role}")
             case 'e':

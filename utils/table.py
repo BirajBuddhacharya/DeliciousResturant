@@ -3,48 +3,87 @@ import os
 class Table:   
     """
         A class to represent a table structure with headers and rows of data.
+        
             Attributes
                 -> tableData : dict
                     A dictionary to store table headers and body data.
                     structure: 
                         self.tableData = {
-                            'header': (header1, header2), 
-                            'body': [(data1, data2), (data3, data4)]
+                            'heading1': ['data1', 'data2', 'data3'], 
+                            'heading2': ['data1', 'data2', 'data3']
                         }
-                -> columnsLen : int
-                    The number of columns in the table. (Dynamically added on self.addHeader())
+                -> colLen: number of columns
             Methods
+            
                 -> __init__():
                     Initializes the table with empty headers and body.
-                -> addHeader(*headers):
-                    Adds headers to the table.
-                -> addRow(*data):
-                    Adds a row of data to the table.
                 -> loadData(tableName):
                     Loads table data from a file.
                 -> __str__():
                     Returns a string representation of the table.
                     
     """
-    def __init__(self): 
-        self.tableData = {'header': [], 'body': []} # table data storage
+    def __init__(self, data): 
+        # validating data
+        previous = len(data[next(iter(data))]) # getting length of first element 
+        for _, item in data.items(): 
+            current = len(item)
+            if current != previous: 
+                raise ValueError('the length of dict data must match')
+            
+        self.tableData = data  # table data storage
+        self.colLen = len(self.tableData)
         
-    def addHeader(self, *headers): 
-        self.tableData['header'] = headers
+    def __search(self, searchItem: dict): 
         
-        # assigning no of columns
-        self.columnsLen =  len(headers)
+        """
+            Searches for an element in the table using the given key-value pair.
+            Args:
+                searchItem (dict): A dictionary containing a single key-value pair to search for.
+                    Structure:
+                    Note: The length of the dictionary must be 1.
+            Returns:
+                int: The index of the element in the table if found.
+                None: If the element is not found or if an error occurs.
+            
+            example: 
+                index = self.__search({'name': 'x'})
+        """
+        # only supports dict with 1 item
+        if len(searchItem) > 1 or len(searchItem) == 0: 
+            print("bad parameter given len must be 1")
         
-    def addRow(self, *data): 
-        # returning early if row length doesnt match 
-        if len(data) != self.columnsLen: 
-            print("No of data must match column. No data added")
-            return 
+        try: 
+            key, value = [(key, value) for key, value in searchItem.items()][0]
+            for i, element in enumerate(self.tableData[key]): 
+                if element == value: 
+                    return i
+
+            # if value not found
+            print("value not found")   
+            return      
         
-        self.tableData['body'].append(data)
+        except KeyError: 
+            print('give key not found')
     
-    def loadData(self, tableName): 
-        fullPath = os.path.join('Databases', tableName)
+    @classmethod
+    def loadData(cls, filename): 
+        """
+            Loads data from a CSV file in the database and returns an instance of the class with the loaded data.
+            Args:
+                filename (str): The name of the file to load.
+            Returns:
+                cls: An instance of the class with the loaded data.
+            Raises:
+                FileNotFoundError: If the specified file does not exist.
+                ValueError: If the CSV file format is incorrect (i.e., the number of columns does not match the header).
+            Example:
+                table_instance = Table.loadData('example.csv')
+        """
+        # making dict to store loaded data
+        tableData = {}
+        
+        fullPath = os.path.join('Database', filename)
         
         # reading file
         try: 
@@ -62,54 +101,94 @@ class Table:
             
             # handling header
             if index == 0: 
-                self.addHeader(*line)
+                for header in line: 
+                    tableData[header] = []
+                    
             # handling table body
             else: 
-                self.addRow(*line)
+                # handling inproper csv format
+                if len(line) != len(tableData): 
+                    raise ValueError("Bad CSV: data length doesn't match with header")
+                
+                for key, data in zip(tableData.keys(), line): 
+                    tableData[key].append(data)
+        
+        return cls(tableData)
     
+    def append(self, data: dict): 
+        """
+            append data to table object (will not be saved in file)
+            args: 
+                data -> dict of data to append (must match the structure of table)
+        """
+        # validating data
+        if type(data) != dict: 
+            print("parameter must be dict")
+            return 
+        if any(key not in self.tableData for key in data) or len(data) != self.colLen: 
+            print('bad append data: data must having matching key as tableData no data appended')
+            return 
+        
+        for key, item in data.items(): 
+            self.tableData[key].append(item)
+    
+    def update(self, updateIdentifier, updateData):
+        pass
+    
+    def delete(self, deleteIdentifier):
+        pass
+            
     def saveData(self, fileName): 
         saveStr = ''
         
-        # saving head
-        saveStr += ','.join(self.tableData['header'])
-        # adding line break 
-        saveStr += '\n'
+        # formating self.tableData into rows and columns
+        columns = [[header, *item] for header, item in self.tableData.items()]
+        rows = zip(*columns)
         
-        for data in self.tableData['body']: 
-            saveStr += ','.join(data)
-            # line break 
-            saveStr += '\n'
+        saveStr = ''
+        for row in rows:
+            saveStr += ','.join(row) + '\n'
             
         # saving into file 
         with open(fileName, 'w') as fp:
             fp.write(saveStr) 
+    
             
     def __str__(self):  
-        if not self.tableData['header'] or not self.tableData['body']:
+        if not self.tableData:
             return "Table is empty."
 
+        # formating columns
+        columns = [[header, *item] for header, item in self.tableData.items()]
+        
         # Determine column widths dynamically
-        col_widths = [max(len(str(row[i])) for row in [self.tableData['header']] + self.tableData['body']) for i in range(len(self.tableData['header']))]
-
+        col_widths = [
+            max(len(str(element)) for element in column)
+            for column in columns
+        ]
+        
         # Create formatted row function
         def format_row(row):
-            return "| " + " | ".join(f"{str(row[i]):<{col_widths[i]}}" for i in range(len(row))) + " |"
+            return "| " + " | ".join(f"{str(element):<{col_widths[i]}}" for i, element in enumerate(row)) + " |"
 
         # Generate separator
         separator = "+-" + "-+-".join("-" * col_widths[i] for i in range(len(col_widths))) + "-+"
 
         # Construct table
-        return_str = f"{separator}\n{format_row(self.tableData['header'])}\n{separator}\n"
-        return_str += "\n".join(format_row(row) for row in self.tableData['body'])
+        rows = zip(*columns) # zips corresponding column element into list (row)
+        rows_iter = iter(rows)
+        
+        # constructing header
+        return_str = f"{separator}\n{format_row(next(rows_iter))}\n{separator}\n"
+        return_str += "\n".join(format_row(row) for row in rows_iter)
         return_str += f"\n{separator}"
 
         return return_str
     
-        
      
 # unit testing
 if __name__ == "__main__": 
-    table = Table()
-    table.loadData('users.txt')
+    table = Table.loadData('users.txt')
     print(table)
+    
 

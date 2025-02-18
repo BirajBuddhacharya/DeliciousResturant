@@ -105,12 +105,6 @@ class Table:
 
         return return_str
     
-    def append(self, *appendargs):
-        if len(appendargs) != self.columnsLen: 
-            print("args and columns len doesn't match. No change done") 
-            return 
-        
-        self.tableData['body'].append(appendargs)
         
      
 # unit testing

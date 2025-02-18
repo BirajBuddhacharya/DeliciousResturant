@@ -25,32 +25,23 @@ def manage_staff():
         match action:
             case 'a':
                 # Logic for adding staff
-                name = input("Enter name of the new staff: ")
+                email = input("Enter name of the new staff: ")
                 password = input("Enter password of the new staff: ")
                 email = input("Enter email of the new staff: ")
                 role = input("Enter role of the new staff: ")
-                users.append(name, password, email, role)
-                print(f"Added new staff: {name}, Role: {role}")
+                users.addRow(None, email, password, email, role) # neglecting id ( id will be removed in future version )
+                users.saveData('users.txt')
+                print(f"Added new staff: {email}, Role: {role}")
             case 'e':
                 # Logic for editing staff
-                name = input("Enter name of the staff to edit: ")
-                for user in users:
-                    if user["name"] == name:
-                        new_name = input("Enter new name: ")
-                        new_role = input("Enter new role: ")
-                        user["name"] = new_name
-                        user["role"] = new_role
-                        Table().saveData('users.txt', users)
-                        print(f"Updated staff: {new_name}, Role: {new_role}")
-                        break
-                else:
-                    print("Staff not found.")
+                email = input("Enter email of the staff to edit: ")
+                users.update(email, )
             case 'd':
                 # Logic for deleting staff
-                name = input("Enter name of the staff to delete: ")
-                users = [user for user in users if user["name"] != name]
+                email = input("Enter name of the staff to delete: ")
+                users = [user for user in users if user["name"] != email]
                 Table().saveData('users.txt', users)
-                print(f"Deleted staff: {name}")
+                print(f"Deleted staff: {email}")
             case 'q':
                 # Quit the loop
                 break

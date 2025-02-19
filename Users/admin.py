@@ -1,11 +1,10 @@
-from APIs.updateProfile import UpdateProfile
 from APIs.getCurrentUser import GetCurrentUser
 from utils.table import Table
 from utils.clear import Clear
 
 def manage_staff():
     print("Managing staff...")
-    users = Table().loadData('Databases/users.txt')
+    users = Table.loadData('users.txt')
     
     # printing all users
     print(users)
@@ -22,32 +21,40 @@ def manage_staff():
         action = input("Enter the letter of the action you want to perform: ").lower()
         
         Clear() # clearing previous outputs
+        print(users)
         match action:
             case 'a':
                 # Logic for adding staff
-                email = input("Enter name of the new staff: ")
-                password = input("Enter password of the new staff: ")
-                email = input("Enter email of the new staff: ")
-                role = input("Enter role of the new staff: ")
-                users.append(None, email, password, email, role) # neglecting id ( id will be removed in future version )
-                users.saveData('users.txt')
-                print(f"Added new staff: {email}, Role: {role}")
+                addDict = {}
+                for key in users.tableData:
+                    userInput = input(f"Enter {key}:")
+                    addDict.update({key: userInput})
+                
+                users.append(addDict)
             case 'e':
                 # Logic for editing staff
                 email = input("Enter email of the staff to edit: ")
-                users.update(email, )
+                updateIdentifier = {'email': email}
+                updateData = {}
+                
+                for key in users.tableData: 
+                    userInput = input(f'Enter new {key} (Enter for no changes): ')
+                    if userInput: 
+                        updateData.update({key: userInput})
+                
+                users.update(updateIdentifier, updateData)
             case 'd':
                 # Logic for deleting staff
                 email = input("Enter name of the staff to delete: ")
-                users = [user for user in users if user["name"] != email]
-                Table().saveData('users.txt', users)
-                print(f"Deleted staff: {email}")
+                users.delete({'email': email})
             case 'q':
                 # Quit the loop
                 break
             case _:
                 Clear()
                 print("Invalid choice. Try again.")
+    
+    users.saveData('users.txt')
     
 
 def view_sales_report():
@@ -58,11 +65,8 @@ def view_sales_report():
     print(salesReport)
 
 def view_feedback():
-    # making table object
-    table = Table()
-    
-    # loading feedback table
-    table.loadData('feedbacks.txt')
+    # loading feedback data
+    table = Table.loadData('feedbacks.txt')
     
     # displaying feedbacks
     print("Viewing feedback...")
@@ -71,38 +75,21 @@ def view_feedback():
 def update_profile():
     # geting current user mail from cookie
     _, email, _ = GetCurrentUser()
+    users = Table.loadData('users.txt')
     
-    # Presenting the user with options to update profile
-    print("""
-    Choose an option to update:
-    1. Change name
-    2. Change email
-    3. Change password
-    """)
-
-    # Getting user choice
-    choice = input("Enter the number of the option you want to update: ")
-
-    # Initializing updatekwargs dictionary
-    updatekwargs = {}
-
-    match choice:
-        case "1":
-            new_name = input("Enter new name: ")
-            updatekwargs["updateName"] = new_name
-        case "2":
-            new_email = input("Enter new email: ")
-            updatekwargs["updateEmail"] = new_email
-        case "3":
-            new_password = input("Enter new password: ")
-            updatekwargs["updatePassword"] = new_password
-        case _:
-            Clear()
-            print("Invalid choice. No updates made.")
-            return
-
-    # Calling UpdateProfile with email and updatekwargs
-    UpdateProfile(email, **updatekwargs)
+    updateData = {}
+                
+    for key in users.tableData: 
+        # skipping role 
+        if key == 'role': 
+            continue
+        
+        userInput = input(f'Enter new {key} (Enter for no changes): ')
+        if userInput: 
+            updateData.update({key: userInput})
+            
+    users.update({'email': email}, updateData)
+    users.saveData('users.txt')
     
 def main(): 
     # Start writing your code here
@@ -153,4 +140,4 @@ def main():
 
 # for unit testing
 if __name__ == "__main__":
-    view_feedback()
+    manage_staff()

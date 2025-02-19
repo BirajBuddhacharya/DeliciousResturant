@@ -3,3 +3,4 @@ Anush Maharjan,pass123,anush@gmail.com,admin
 Jane Smith,secure456,jane.smith@example.com,admin
 Bob Johnson,qwerty789,bob.johnson@example.com,chef
 Charlie Davis,pass987,charlie.davis@example.com,manager
+dev,dev@gmail.com,anush@gmail.com,customer

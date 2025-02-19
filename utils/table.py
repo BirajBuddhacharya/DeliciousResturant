@@ -123,7 +123,7 @@ class Table:
         """
         # validating data
         if type(data) != dict: 
-            print("parameter must be dict")
+            print("parameter must me of type dict")
             return 
         if any(key not in self.tableData for key in data) or len(data) != self.colLen: 
             print('bad append data: data must having matching key as tableData no data appended')
@@ -132,13 +132,31 @@ class Table:
         for key, item in data.items(): 
             self.tableData[key].append(item)
     
-    def update(self, updateIdentifier, updateData):
-        pass
-    
-    def delete(self, deleteIdentifier):
-        pass
+    def update(self, updateIdentifier:dict, updateData:dict):
+        # validating data 
+        if any((key not in self.tableData) for key in updateIdentifier): 
+            print("given data is not valid: all key must match the key in table")
+            return 
+        
+        index = self.__search(updateIdentifier)
+        
+        for key, value in updateData.items(): 
+            self.tableData[key][index] = value
+        
+        print("Data updated Successfully")
+        return 
             
-    def saveData(self, fileName): 
+
+    def delete(self, deleteIdentifier: dict):
+        index = self.__search(deleteIdentifier)
+        
+        for _, value in self.tableData.items(): 
+            del value[index]
+        
+        print("Data deleted successfully")
+            
+    def saveData(self, fileName):
+        fullPath = os.path.join('Database', fileName) 
         saveStr = ''
         
         # formating self.tableData into rows and columns
@@ -150,7 +168,7 @@ class Table:
             saveStr += ','.join(row) + '\n'
             
         # saving into file 
-        with open(fileName, 'w') as fp:
+        with open(fullPath, 'w') as fp:
             fp.write(saveStr) 
     
             
@@ -189,6 +207,7 @@ class Table:
 # unit testing
 if __name__ == "__main__": 
     table = Table.loadData('users.txt')
+    table.delete({'email': 'anush@gmail.com'})
     print(table)
     
 

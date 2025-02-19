@@ -38,7 +38,7 @@ class Table:
         __str__():
             Returns a string representation of the table.
     """
-    def __init__(self, data): 
+    def __init__(self, data: dict): 
         # validating data
         previous = len(data[next(iter(data))]) # getting length of first element 
         for _, item in data.items(): 
@@ -116,9 +116,13 @@ class Table:
             print("The given file path doesn't exist no data loaded")
             return 
         
+        # returning if file is empty
+        if not lines: 
+            raise ValueError("The file is empty")
+        
         # loading data into self.tableData
         for index, line in enumerate(lines): 
-            line = line.replace('\n', '').split(',')   # removing any newline and spliting data into list
+            line = line.replace('\n', '').split(';')   # removing any newline and spliting data into list
             
             # handling header
             if index == 0: 
@@ -142,6 +146,8 @@ class Table:
         
         Args: 
             data (dict): A dictionary of data to append (must match the structure of the table).
+        Example: 
+            instance.append({'appendkey1': 'value', 'appendkey2': 'value'})
         """
         # validating data
         if type(data) != dict: 
@@ -254,5 +260,5 @@ class Table:
 # unit testing
 if __name__ == "__main__": 
     table = Table.loadData('users.txt')
-    table.delete({'email': 'anush@gmail.com'})
+    # table.delete({'email': 'anush@gmail.com'})
     print(table)

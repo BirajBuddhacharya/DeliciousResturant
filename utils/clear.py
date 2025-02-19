@@ -2,10 +2,9 @@ import os
 import platform
 
 def Clear(): 
-    if platform.system() == "Windows":
-        os.system('cls')
-    else:
-        os.system('clear')
+    exec = 'cls' if platform.system() == 'Windows' else 'clear'
+    
+    os.system(exec)
         
 # unit testing 
 if __name__ == '__main__': 

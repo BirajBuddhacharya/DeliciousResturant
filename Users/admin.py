@@ -1,3 +1,4 @@
+import sys; sys.path.append('.') # for debugging
 from APIs.getCurrentUser import GetCurrentUser
 from utils.table import Table
 from utils.clear import Clear
@@ -60,13 +61,21 @@ def manage_staff():
 def view_sales_report():
     print("Viewing sales report...")
     
-    salesReport= Table().loadData("salesReport.txt")
-    
+    try: 
+        salesReport= Table.loadData("salesReport.txt")
+    except ValueError: 
+        print("No sales report")
+        return 
+
     print(salesReport)
 
 def view_feedback():
     # loading feedback data
-    table = Table.loadData('feedbacks.txt')
+    try: 
+        table = Table.loadData('feedbacks.txt')
+    except ValueError: 
+        print("No feedback report")
+        return 
     
     # displaying feedbacks
     print("Viewing feedback...")
@@ -140,4 +149,4 @@ def main():
 
 # for unit testing
 if __name__ == "__main__":
-    manage_staff()
+    view_feedback()

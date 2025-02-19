@@ -15,8 +15,8 @@ def GetUser(email, ):
                 continue
             
             row = line.split(',') # seperates the string by commas and returns a list
-            if row[3] == email: 
-                return (row[1], row[2], row[4])
+            if row[2] == email: 
+                return (row[0], row[1], row[3])
         
         # if the user is not found
         return None

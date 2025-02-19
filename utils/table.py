@@ -2,26 +2,41 @@ import os
 
 class Table:   
     """
-        A class to represent a table structure with headers and rows of data.
+    A class to represent a table structure with headers and rows of data.
+    
+    Attributes:
+        tableData (dict): A dictionary to store table headers and body data.
+            Structure: 
+                self.tableData = {
+                    'heading1': ['data1', 'data2', 'data3'], 
+                    'heading2': ['data1', 'data2', 'data3']
+                }
+        colLen (int): Number of columns in the table.
+    
+    Methods:
+        __init__(data):
+            Initializes the table with the provided data.
         
-            Attributes
-                -> tableData : dict
-                    A dictionary to store table headers and body data.
-                    structure: 
-                        self.tableData = {
-                            'heading1': ['data1', 'data2', 'data3'], 
-                            'heading2': ['data1', 'data2', 'data3']
-                        }
-                -> colLen: number of columns
-            Methods
-            
-                -> __init__():
-                    Initializes the table with empty headers and body.
-                -> loadData(tableName):
-                    Loads table data from a file.
-                -> __str__():
-                    Returns a string representation of the table.
-                    
+        __search(searchItem: dict):
+            Searches for an element in the table using the given key-value pair.
+        
+        loadData(filename):
+            Loads table data from a CSV file and returns an instance of the class with the loaded data.
+        
+        append(data: dict):
+            Appends data to the table object (will not be saved in file).
+        
+        update(updateIdentifier: dict, updateData: dict):
+            Updates data in the table based on the given identifier.
+        
+        delete(deleteIdentifier: dict):
+            Deletes data from the table based on the given identifier.
+        
+        saveData(fileName):
+            Saves the current table data to a CSV file.
+        
+        __str__():
+            Returns a string representation of the table.
     """
     def __init__(self, data): 
         # validating data
@@ -30,24 +45,26 @@ class Table:
             current = len(item)
             if current != previous: 
                 raise ValueError('the length of dict data must match')
+            previous = current
             
         self.tableData = data  # table data storage
         self.colLen = len(self.tableData)
         
     def __search(self, searchItem: dict): 
-        
         """
-            Searches for an element in the table using the given key-value pair.
-            Args:
-                searchItem (dict): A dictionary containing a single key-value pair to search for.
-                    Structure:
-                    Note: The length of the dictionary must be 1.
-            Returns:
-                int: The index of the element in the table if found.
-                None: If the element is not found or if an error occurs.
-            
-            example: 
-                index = self.__search({'name': 'x'})
+        Searches for an element in the table using the given key-value pair.
+        
+        Args:
+            searchItem (dict): A dictionary containing a single key-value pair to search for.
+                Structure:
+                Note: The length of the dictionary must be 1.
+        
+        Returns:
+            int: The index of the element in the table if found.
+            None: If the element is not found or if an error occurs.
+        
+        Example: 
+            index = self.__search({'name': 'x'})
         """
         # only supports dict with 1 item
         if len(searchItem) > 1 or len(searchItem) == 0: 
@@ -69,16 +86,20 @@ class Table:
     @classmethod
     def loadData(cls, filename): 
         """
-            Loads data from a CSV file in the database and returns an instance of the class with the loaded data.
-            Args:
-                filename (str): The name of the file to load.
-            Returns:
-                cls: An instance of the class with the loaded data.
-            Raises:
-                FileNotFoundError: If the specified file does not exist.
-                ValueError: If the CSV file format is incorrect (i.e., the number of columns does not match the header).
-            Example:
-                table_instance = Table.loadData('example.csv')
+        Loads data from a CSV file in the database and returns an instance of the class with the loaded data.
+        
+        Args:
+            filename (str): The name of the file to load.
+        
+        Returns:
+            cls: An instance of the class with the loaded data.
+        
+        Raises:
+            FileNotFoundError: If the specified file does not exist.
+            ValueError: If the CSV file format is incorrect (i.e., the number of columns does not match the header).
+        
+        Example:
+            table_instance = Table.loadData('example.csv')
         """
         # making dict to store loaded data
         tableData = {}
@@ -117,9 +138,10 @@ class Table:
     
     def append(self, data: dict): 
         """
-            append data to table object (will not be saved in file)
-            args: 
-                data -> dict of data to append (must match the structure of table)
+        Appends data to the table object (will not be saved in file).
+        
+        Args: 
+            data (dict): A dictionary of data to append (must match the structure of the table).
         """
         # validating data
         if type(data) != dict: 
@@ -133,6 +155,13 @@ class Table:
             self.tableData[key].append(item)
     
     def update(self, updateIdentifier:dict, updateData:dict):
+        """
+        Updates data in the table based on the given identifier.
+        
+        Args:
+            updateIdentifier (dict): A dictionary containing a single key-value pair to identify the row to update.
+            updateData (dict): A dictionary containing the data to update.
+        """
         # validating data 
         if any((key not in self.tableData) for key in updateIdentifier): 
             print("given data is not valid: all key must match the key in table")
@@ -148,6 +177,12 @@ class Table:
             
 
     def delete(self, deleteIdentifier: dict):
+        """
+        Deletes data from the table based on the given identifier.
+        
+        Args:
+            deleteIdentifier (dict): A dictionary containing a single key-value pair to identify the row to delete.
+        """
         index = self.__search(deleteIdentifier)
         
         for _, value in self.tableData.items(): 
@@ -156,6 +191,12 @@ class Table:
         print("Data deleted successfully")
             
     def saveData(self, fileName):
+        """
+        Saves the current table data to a CSV file.
+        
+        Args:
+            fileName (str): The name of the file to save the data to.
+        """
         fullPath = os.path.join('Database', fileName) 
         saveStr = ''
         
@@ -173,6 +214,12 @@ class Table:
     
             
     def __str__(self):  
+        """
+        Returns a string representation of the table.
+        
+        Returns:
+            str: A formatted string representation of the table.
+        """
         if not self.tableData:
             return "Table is empty."
 
@@ -209,5 +256,3 @@ if __name__ == "__main__":
     table = Table.loadData('users.txt')
     table.delete({'email': 'anush@gmail.com'})
     print(table)
-    
-

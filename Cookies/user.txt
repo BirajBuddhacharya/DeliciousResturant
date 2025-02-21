@@ -1,1 +1,1 @@
-Anush Maharjan,anush@gmail.com,admin
+test;test@gmail.com;admin

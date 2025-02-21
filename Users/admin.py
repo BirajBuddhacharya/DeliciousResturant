@@ -2,6 +2,7 @@ import sys; sys.path.append('.') # for debugging
 from APIs.getCurrentUser import GetCurrentUser
 from utils.table import Table
 from utils.clear import Clear
+from utils.updateProfile import UpdateProfile as update_profile
 
 def manage_staff():
     print("Managing staff...")
@@ -80,26 +81,7 @@ def view_feedback():
     # displaying feedbacks
     print("Viewing feedback...")
     print(table)
-
-def update_profile():
-    # geting current user mail from cookie
-    _, email, _ = GetCurrentUser()
-    users = Table.loadData('users.txt')
-    
-    updateData = {}
-                
-    for key in users.tableData: 
-        # skipping role 
-        if key == 'role': 
-            continue
-        
-        userInput = input(f'Enter new {key} (Enter for no changes): ')
-        if userInput: 
-            updateData.update({key: userInput})
-            
-    users.update({'email': email}, updateData)
-    users.saveData('users.txt')
-    
+  
 def main(): 
     # Start writing your code here
     """

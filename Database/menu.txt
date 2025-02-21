@@ -1,0 +1,9 @@
+id;name;description;category;price
+1;Margherita Pizza;Classic cheese pizza;Pizza;8.99
+2;Pepperoni Pizza;Pepperoni and cheese;Pizza;9.99
+3;Caesar Salad;Crisp romaine lettuce;Salad;7.49
+4;Grilled Chicken Sandwich;Grilled chicken breast;Sandwich;6.99
+5;Spaghetti Bolognese;Pasta with meat sauce;Pasta;10.99
+6;Cheeseburger;Beef patty with cheese;Burger;8.49
+7;Tiramisu;Coffee-flavored dessert;Dessert;5.99
+8;Lemonade;Freshly squeezed;Drink;2.99

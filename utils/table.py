@@ -50,7 +50,7 @@ class Table:
         self.tableData = data  # table data storage
         self.colLen = len(self.tableData)
         
-    def __search(self, searchItem: dict): 
+    def search(self, searchItem: dict): 
         """
         Searches for an element in the table using the given key-value pair.
         
@@ -70,18 +70,14 @@ class Table:
         if len(searchItem) > 1 or len(searchItem) == 0: 
             print("bad parameter given len must be 1")
         
-        try: 
-            key, value = [(key, value) for key, value in searchItem.items()][0]
-            for i, element in enumerate(self.tableData[key]): 
-                if element == value: 
-                    return i
+        key, value = [(key, value) for key, value in searchItem.items()][0]
+        for i, element in enumerate(self.tableData[key]): 
+            if element == value: 
+                return i
 
-            # if value not found
-            print("value not found")   
-            return      
-        
-        except KeyError: 
-            print('give key not found')
+        # if value not found
+        raise IndexError("value not found")   
+     
     
     @classmethod
     def loadData(cls, filename): 
@@ -166,14 +162,14 @@ class Table:
         
         Args:
             updateIdentifier (dict): A dictionary containing a single key-value pair to identify the row to update.
-            updateData (dict): A dictionary containing the data to update.
+            updateData (dict): BirajBuddhacharya/testingRepoA dictionary containing the data to update.
         """
         # validating data 
         if any((key not in self.tableData) for key in updateIdentifier): 
             print("given data is not valid: all key must match the key in table")
             return 
         
-        index = self.__search(updateIdentifier)
+        index = self.search(updateIdentifier)
         
         for key, value in updateData.items(): 
             self.tableData[key][index] = value
@@ -189,7 +185,7 @@ class Table:
         Args:
             deleteIdentifier (dict): A dictionary containing a single key-value pair to identify the row to delete.
         """
-        index = self.__search(deleteIdentifier)
+        index = self.search(deleteIdentifier)
         
         for _, value in self.tableData.items(): 
             del value[index]
@@ -212,7 +208,7 @@ class Table:
         
         saveStr = ''
         for row in rows:
-            saveStr += ','.join(row) + '\n'
+            saveStr += ';'.join(row) + '\n'
             
         # saving into file 
         with open(fullPath, 'w') as fp:
@@ -260,5 +256,5 @@ class Table:
 # unit testing
 if __name__ == "__main__": 
     table = Table.loadData('users.txt')
-    # table.delete({'email': 'anush@gmail.com'})
+    table.delete({'email': 'anush@gmail.com'})
     print(table)

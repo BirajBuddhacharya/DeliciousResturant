@@ -252,6 +252,15 @@ class Table:
 
         return return_str
     
+    def __iter__(self): 
+        columns = [item for _, item in self.tableData.items()]
+        rows = zip(*columns) # zips corresponding column element into list (row)
+        
+        return iter(rows)
+    
+    def __getitem__(self, index): 
+        return self.tableData[index]
+    
      
 # unit testing
 if __name__ == "__main__": 

@@ -48,7 +48,8 @@ def place_orders():
             'customer_name': name,
             'food_id': food_id,
             'food_name': food_name,
-            'quantity': quantity
+            'quantity': quantity,
+            'status': 'pending'
         }
         orders.append(orderData)
         
@@ -60,8 +61,13 @@ def manage_orders():
     print("Managing orders...")
     orders = Table.loadData('orders.txt')
     
+    # gettign current user
+    _, email, _ = GetCurrentUser()
+    
+    filtered_orders = [order for order in orders if order[1] == email]
+    
     # printing all users
-    print(orders)
+    print(filtered_orders)
     
     while True:
         print("""
@@ -74,7 +80,7 @@ def manage_orders():
         action = input("Enter the letter of the action you want to perform: ").lower()
         
         Clear() # clearing previous outputs
-        print(orders)
+        print(filtered_orders)
         match action:
             case 'e':
                 # Logic for editing staff
@@ -82,10 +88,27 @@ def manage_orders():
                 updateIdentifier = {'id': order_id}
                 updateData = {}
                 
+                # displaying menu for changes
+                menu = Table.loadData('menu.txt')
+                print(menu)
+                
                 for key in orders.tableData: 
-                    userInput = input(f'Enter new {key} (Enter for no changes): ')
-                    if userInput: 
-                        updateData.update({key: userInput})
+                    if key == 'food_id' or key == 'quantity': # only updating food_id and quantity
+                        userInput = input(f'Enter new {key} (Enter for no changes): ')
+                        
+                        # updating food_name as well
+                        if key == 'food_id': 
+                            # validating food_id 
+                            if userInput not in menu.tableData['id']: 
+                                input('Incorrect food id press enter to continue again: ')
+                                continue
+                            food_name = menu.tableData['name'][menu.search({'id':userInput})]
+                            
+                            # appending food_name onto updateData
+                            updateData.update({'food_name': food_name})
+                            
+                        if userInput: 
+                            updateData.update({key: userInput})
                 
                 orders.update(updateIdentifier, updateData)
             case 'd':

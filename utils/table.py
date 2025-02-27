@@ -259,11 +259,54 @@ class Table:
         return iter(rows)
     
     def __getitem__(self, index): 
-        return self.tableData[index]
+        if isinstance(index, list): 
+            return Table({key: self.tableData[key] for key in index})
+        
+        return Table(self.tableData[index])
     
+    def getRow(self, index): 
+        # handling list index
+        if isinstance(index, list): 
+            row = {key: [value[i] for i in index] for key, value in self.tableData.items()}
+        else: 
+            row = {key: value[index] for key, value in self.tableData.items()}
+            
+        return Table(row)
      
+    def filter(self, searchColumn, searchValue):
+        if column := self.tableData.get(searchColumn, None): 
+            index_list = []
+            
+            for i, value in enumerate(column): 
+                if value == searchValue: 
+                    index_list.append(i)
+            
+            # if not data found
+            if len(index_list) == 0: 
+                print("No data found")
+                return
+            
+            return self.getRow(index_list)
+        
+        # if search column not found
+        print("search column not found")
+    
+    def unique(self, key): 
+        seen = set()
+        display_index = []
+        
+        if column := self.tableData.get(key, None): 
+            for i, value in enumerate(column): 
+                if value not in seen:   
+                    display_index.append(i)
+                    seen.add(value)                
+            
+            return self.getRow(display_index)
+        
+        # if key not found
+        print("key not found")
+    
 # unit testing
-if __name__ == "__main__": 
+if __name__ == "__main__":
     table = Table.loadData('users.txt')
-    table.delete({'email': 'anush@gmail.com'})
-    print(table)
+    print(table.filter('email', 'test@gmail.com'))

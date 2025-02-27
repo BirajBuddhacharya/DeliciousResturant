@@ -64,7 +64,7 @@ def manage_orders():
     # gettign current user
     _, email, _ = GetCurrentUser()
     
-    filtered_orders = [order for order in orders if order[1] == email]
+    filtered_orders = orders.filter('customer_email', email)
     
     # printing all users
     print(filtered_orders)
@@ -104,7 +104,7 @@ def manage_orders():
                                 continue
                             food_name = menu.tableData['name'][menu.search({'id':userInput})]
                             
-                            # appending food_name onto updateData
+                            # updating food name food_name onto updateData
                             updateData.update({'food_name': food_name})
                             
                         if userInput: 
@@ -125,7 +125,17 @@ def manage_orders():
     orders.saveData('users.txt')
     
 def view_order_status():
-    pass
+    print("viewing orders...")
+    orders = Table.loadData('orders.txt')
+    
+    # gettign current user
+    _, email, _ = GetCurrentUser()
+    
+    # getting only orders of logedin user
+    filtered_orders = orders.filter('customer_email', email)
+    
+    # printing all users
+    print(filtered_orders)
 
 def send_feedback(): 
     # loading feedbacks
@@ -152,8 +162,6 @@ def send_feedback():
     feedbacks.saveData('feedbacks.txt')
     print("We got your feedback ;)")
     
-    pass
-
 def main(): 
     """
     4. Customer
@@ -201,4 +209,4 @@ def main():
             print("Invalid choice try again")
             
 if __name__ == '__main__': 
-    update_profile()
+    view_order_status()

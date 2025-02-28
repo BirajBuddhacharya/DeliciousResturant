@@ -3,6 +3,11 @@ from utils.login import Login
 from utils.clear import Clear
 
 def main(): 
+    # clearing all previous outputs
+    Clear()
+    
+    print(f"{'-' * 40} Welcome {'-' * 40}")
+    
     # attempt counter
     attemptCount = 1
     
@@ -16,7 +21,9 @@ def main():
         
         if isAuthenticated: 
             HandleRole(role)
-            break
+            
+            # for going back to login page
+            attemptCount = 0
         else: 
             Clear()
             print("Incorrect email or password")

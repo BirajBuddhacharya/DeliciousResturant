@@ -76,7 +76,7 @@ class Table:
                 return i
 
         # if value not found
-        raise IndexError("value not found")   
+        return None
      
     
     @classmethod
@@ -169,13 +169,16 @@ class Table:
             print("given data is not valid: all key must match the key in table")
             return 
         
-        index = self.search(updateIdentifier)
+        if index :=  self.search(updateIdentifier):
+            for key, value in updateData.items(): 
+                self.tableData[key][index] = value
+            
+            print("Data updated Successfully")
+            return 
         
-        for key, value in updateData.items(): 
-            self.tableData[key][index] = value
-        
-        print("Data updated Successfully")
-        return 
+        # if search data not found
+        else: 
+            print("Update identifer not found updation failed.")
             
 
     def delete(self, deleteIdentifier: dict):
@@ -185,12 +188,14 @@ class Table:
         Args:
             deleteIdentifier (dict): A dictionary containing a single key-value pair to identify the row to delete.
         """
-        index = self.search(deleteIdentifier)
-        
-        for _, value in self.tableData.items(): 
-            del value[index]
-        
-        print("Data deleted successfully")
+        if index := self.search(deleteIdentifier):
+            for _, value in self.tableData.items(): 
+                del value[index]
+            
+            print("Data deleted successfully")
+            
+        else: # search data not found case
+            print("Delete identifier not found deletion failed")
             
     def saveData(self, fileName):
         """

@@ -1,3 +1,4 @@
+import sys; sys.path.append('.')
 from utils.updateProfile import UpdateProfile
 from utils.clear import Clear
 from utils.table import Table
@@ -7,6 +8,9 @@ def view_orders():
     print("viewing orders.....")
     orders = Table.loadData('orders.txt')
     print(orders)
+    print('\n')
+    input("Press Enter to continue: ")
+    Clear()
 
 def update_order_status(): 
     print("Updating order status....")
@@ -17,9 +21,33 @@ def update_order_status():
     # printing available orders
     print(orders)
     
-    # incomplete
+    order_id = input("Enter order id of order to update: ")
     
+    # getting order status
+    order_statuses = {
+        "1": "Pending",
+        "2": "Ongoing",
+        "3": "Completed"
+    }
+    # printing available statuses
+    print("Order statuses:")
+    for status_id, status in order_statuses.items():
+        print(f"{status_id}. {status}")
+
+    # getting status id from user
+    status_id = input("Enter status id: ")
+
+    # storing order status in a variable
+    order_status = order_statuses.get(status_id, None)
     
+    # updating orders
+    orders.update({'id': order_id}, {'status': order_status})
+    
+    # saving updated orders
+    orders.saveData('orders.txt')
+    
+    Clear()
+    print("Order status updated successfully")
     
     
 def request_ingredients():
@@ -37,6 +65,8 @@ def request_ingredients():
     
     # saving ingredients
     ingredients.saveData("ingredientsRequest.txt")
+    
+    Clear()
     print("Ingredient has been requested")
 
 def main(): 
@@ -68,7 +98,7 @@ def main():
         """)
 
         # getting user choice
-        choice = input("Enter the number of the action you want to perform: ")
+        choice = input("Enter the number ofp the action you want to perform: ")
 
         # getting corresponing action according to choice 
         if action := actions.get(choice, None):
@@ -79,5 +109,9 @@ def main():
         # if choice is not valid
         else: 
             Clear() # clearing previous outputs
-            print("Invalid choice try again")
+            input("Invalid choice press ENTER to try again...")
             
+
+# unit testing
+if __name__ == "__main__": 
+    main()

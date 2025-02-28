@@ -11,23 +11,25 @@ def place_orders():
     orders = Table.loadData('orders.txt')
     
     # creating unique order id
-    order_id = str(GenId(orders.tableData['order_id']))
+    order_id = str(GenId(orders.tableData['id']))
     
     # retriving current customer data to place order
     name, email, _ = GetCurrentUser()
     
     while True: 
-        # clearing output from previous loop
+        # clearing previous output
         Clear()
+        
+        print("Place Orders...")
         
         # printing menu 
         print(menu)
         
         # getting user order
-        food_id = input("Enter id of food you want to order (q for quit):")
+        food_id = input("Enter id of food you want to order (q or ENTER to quit):").lower()
         
         # loop break condition
-        if food_id == 'q':
+        if food_id == 'q' or not food_id:
             break
         
         # validating food_id 
@@ -53,11 +55,14 @@ def place_orders():
         }
         orders.append(orderData)
         
-    # saving orders
-    orders.saveData("orders.txt")
-    print("Your order has been successfully placed")
+        # saving orders
+        orders.saveData("orders.txt")
+        Clear()
+        input("Your order has been successfully placed (press ENTER to continue)...")
     
 def manage_orders():
+    Clear() # clearing previous outputs
+    
     print("Managing orders...")
     orders = Table.loadData('orders.txt')
     
@@ -72,21 +77,27 @@ def manage_orders():
     while True:
         print("""
         Choose an action:
-        e. Edit order
-        d. Delete order
-        q. Quit
+        1. Edit order
+        2. Delete order
+        3. Quit
         """)
         
-        action = input("Enter the letter of the action you want to perform: ").lower()
+        action = input("Enter the number of the action you want to perform: ").lower()
         
         Clear() # clearing previous outputs
         print(filtered_orders)
         match action:
-            case 'e':
+            case '1':
                 # Logic for editing staff
                 order_id = input("Enter order id of order to edit: ")
                 updateIdentifier = {'id': order_id}
-                updateData = {}
+                
+                # breaking if invalid order id
+                if not orders.search(updateIdentifier):
+                    input("Order Id not found press ENTER to try again...")
+                    break
+                    
+                updateData = {} 
                 
                 # displaying menu for changes
                 menu = Table.loadData('menu.txt')
@@ -95,6 +106,10 @@ def manage_orders():
                 for key in orders.tableData: 
                     if key == 'food_id' or key == 'quantity': # only updating food_id and quantity
                         userInput = input(f'Enter new {key} (Enter for no changes): ')
+                        
+                        # skipping if no changes
+                        if not userInput: 
+                            continue
                         
                         # updating food_name as well
                         if key == 'food_id': 
@@ -109,13 +124,20 @@ def manage_orders():
                             
                         if userInput: 
                             updateData.update({key: userInput})
-                
+                                
+                Clear()
                 orders.update(updateIdentifier, updateData)
-            case 'd':
+                
+            case '2':
                 # Logic for deleting staff
                 order_id = input("Enter id of order you want to delete: ")
+                
+                # clearing previous outputs
+                Clear()
+                
+                # deleting from table 
                 orders.delete({'id': order_id})
-            case 'q':
+            case '3':
                 # Quit the loop
                 break
             case _:
@@ -125,6 +147,8 @@ def manage_orders():
     orders.saveData('users.txt')
     
 def view_order_status():
+    Clear() # clearing previous outputs
+    
     print("viewing orders...")
     orders = Table.loadData('orders.txt')
     
@@ -136,8 +160,14 @@ def view_order_status():
     
     # printing all users
     print(filtered_orders)
+    
+    input('press ENTER to continue...')
 
 def send_feedback(): 
+    Clear() # clearing previous outputs
+    
+    print("sending feedbacks...")
+    
     # loading feedbacks
     feedbacks = Table.loadData('feedbacks.txt')
     
@@ -160,7 +190,8 @@ def send_feedback():
     
     # saving feedbacks
     feedbacks.saveData('feedbacks.txt')
-    print("We got your feedback ;)")
+    print("Your feedbacks are safe with our team ;)")
+    input("press ENTER to continue...")
     
 def main(): 
     """
@@ -183,6 +214,9 @@ def main():
 
     # looping until user chooses a valid action
     while True:      
+        # clearing previous loop outputs
+        Clear()
+        
         # printing user instructions
         print("""
         Choose an action:
@@ -199,14 +233,13 @@ def main():
 
         # getting corresponing action according to choice 
         if action := actions.get(choice, None):
-            Clear() # clearing previous outputs
             action()
-            
+                        
         
         # if choice is not valid
         else: 
             Clear() # clearing previous outputs
-            print("Invalid choice try again")
+            input("Invalid choice press ENTER to try again...")
             
 if __name__ == '__main__': 
-    view_order_status()
+    main()

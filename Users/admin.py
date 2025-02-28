@@ -5,6 +5,9 @@ from utils.clear import Clear
 from utils.updateProfile import UpdateProfile as update_profile
 
 def manage_staff():
+    # clearing previous outputs 
+    Clear()
+    
     print("Managing staff...")
     users = Table.loadData('users.txt')
     
@@ -12,6 +15,8 @@ def manage_staff():
     print(users)
     
     while True:
+        Clear() # clearing previous output
+        
         print("""
         Choose an action:
         a. Add staff
@@ -26,6 +31,7 @@ def manage_staff():
         print(users)
         match action:
             case 'a':
+                print("Add staff:")
                 # Logic for adding staff
                 addDict = {}
                 for key in users.tableData:
@@ -33,7 +39,10 @@ def manage_staff():
                     addDict.update({key: userInput})
                 
                 users.append(addDict)
+                print("User added succesfully")
+                
             case 'e':
+                print("Edit staff: ")
                 # Logic for editing staff
                 email = input("Enter email of the staff to edit: ")
                 updateIdentifier = {'email': email}
@@ -46,8 +55,9 @@ def manage_staff():
                 
                 users.update(updateIdentifier, updateData)
             case 'd':
+                print("Delete Staff: ")
                 # Logic for deleting staff
-                email = input("Enter name of the staff to delete: ")
+                email = input("Enter email of the staff to delete: ")
                 users.delete({'email': email})
             case 'q':
                 # Quit the loop
@@ -125,7 +135,7 @@ def main():
         # if choice is not valid
         else: 
             Clear() # clearing previous outputs
-            print("Invalid choice try again")
+            input("Invalid choice press ENTER to try again...")
         
 
 

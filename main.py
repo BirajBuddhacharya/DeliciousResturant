@@ -1,12 +1,13 @@
 from utils.handleRole import HandleRole
 from utils.login import Login
 from utils.clear import Clear
+from utils.fancyTexts import FancyTexts
 
 def main(): 
     # clearing all previous outputs
     Clear()
     
-    print(f"{'-' * 40} Welcome {'-' * 40}")
+    print(f"{'-' * 30} {FancyTexts['welcome']} {'-' * 30}")
     
     # attempt counter
     attemptCount = 1

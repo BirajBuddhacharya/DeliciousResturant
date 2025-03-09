@@ -48,7 +48,8 @@ class Table:
             previous = current
             
         self.tableData = data  # table data storage
-        self.colLen = len(self.tableData)
+        self.columns = self.tableData.keys()
+        self.colLen = len(self.columns)
         
     def search(self, searchItem: dict): 
         """
@@ -169,18 +170,17 @@ class Table:
             print("given data is not valid: all key must match the key in table")
             return 
         
-        if index :=  self.search(updateIdentifier):
-            for key, value in updateData.items(): 
-                self.tableData[key][index] = value
-            
-            print("Data updated Successfully")
-            return 
+        index = self.search(updateIdentifier)
         
         # if search data not found
-        else: 
+        if not index:
             print("Update identifer not found updation failed.")
             
-
+        for key, value in updateData.items(): 
+            self.tableData[key][index] = value
+        
+        print("Data updated Successfully")
+        
     def delete(self, deleteIdentifier: dict):
         """
         Deletes data from the table based on the given identifier.
@@ -188,14 +188,17 @@ class Table:
         Args:
             deleteIdentifier (dict): A dictionary containing a single key-value pair to identify the row to delete.
         """
-        if index := self.search(deleteIdentifier):
-            for _, value in self.tableData.items(): 
-                del value[index]
+        index = self.search(deleteIdentifier)
+        
+        # nothing found on search
+        if not index: # search data not found case
+            raise ValueError("Delete identifier not found deletion failed")
+        
+        for _, value in self.tableData.items(): 
+            del value[index]
+        
+        print("Data deleted successfully")
             
-            print("Data deleted successfully")
-            
-        else: # search data not found case
-            print("Delete identifier not found deletion failed")
             
     def saveData(self, fileName):
         """
@@ -267,12 +270,16 @@ class Table:
         if isinstance(index, list): 
             return Table({key: self.tableData[key] for key in index})
         
-        return Table(self.tableData[index])
+        return Table({index: self.tableData[index]})
+    
+    def __contains__(self, item): 
+        return any([item in value for _, value in self.tableData.items()])
     
     def getRow(self, index): 
         # handling list index
         if isinstance(index, list): 
             row = {key: [value[i] for i in index] for key, value in self.tableData.items()}
+        # handling str index
         else: 
             row = {key: value[index] for key, value in self.tableData.items()}
             
@@ -288,7 +295,7 @@ class Table:
             
             # if not data found
             if len(index_list) == 0: 
-                print("No data found")
+                raise ValueError("No data found")
                 return
             
             return self.getRow(index_list)
@@ -314,4 +321,4 @@ class Table:
 # unit testing
 if __name__ == "__main__":
     table = Table.loadData('users.txt')
-    print(table.filter('email', 'test@gmail.com'))
+    print('tedfst' in table[['role', 'name']])

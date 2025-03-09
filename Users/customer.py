@@ -11,7 +11,7 @@ def place_orders():
     orders = Table.loadData('orders.txt')
     
     # creating unique order id
-    order_id = str(GenId(orders.tableData['id']))
+    order_id = str(GenId(orders['id']))
     
     # retriving current customer data to place order
     name, email, _ = GetCurrentUser()
@@ -33,12 +33,12 @@ def place_orders():
             break
         
         # validating food_id 
-        if food_id not in menu.tableData['id']: 
+        if food_id not in menu['id']: 
             input('Incorrect food id press enter to continue again: ')
             continue
         
         # retriving food name according to id 
-        food_name = menu.tableData['name'][menu.search({'id':food_id})]
+        food_name = menu['name'][menu.search({'id':food_id})]
         
         # getting quantity
         quantity = input("Enter the quantity: ")
@@ -69,8 +69,11 @@ def manage_orders():
     # gettign current user
     _, email, _ = GetCurrentUser()
     
-    filtered_orders = orders.filter('customer_email', email)
-    
+    try: # handling no orders for corresponding userse
+        filtered_orders = orders.filter('customer_email', email)
+    except ValueError: 
+        input("No orders found (press ENTER to continue)...")
+        return 
     # printing all users
     print(filtered_orders)
     
@@ -103,7 +106,7 @@ def manage_orders():
                 menu = Table.loadData('menu.txt')
                 print(menu)
                 
-                for key in orders.tableData: 
+                for key in orders.columns: 
                     if key == 'food_id' or key == 'quantity': # only updating food_id and quantity
                         userInput = input(f'Enter new {key} (Enter for no changes): ')
                         
@@ -114,10 +117,10 @@ def manage_orders():
                         # updating food_name as well
                         if key == 'food_id': 
                             # validating food_id 
-                            if userInput not in menu.tableData['id']: 
+                            if userInput not in menu['id']: 
                                 input('Incorrect food id press enter to continue again: ')
                                 continue
-                            food_name = menu.tableData['name'][menu.search({'id':userInput})]
+                            food_name = menu['name'][menu.search({'id':userInput})]
                             
                             # updating food name food_name onto updateData
                             updateData.update({'food_name': food_name})
@@ -136,7 +139,10 @@ def manage_orders():
                 Clear()
                 
                 # deleting from table 
-                orders.delete({'id': order_id})
+                try: 
+                    orders.delete({'id': order_id})
+                except ValueError: 
+                    input("Order id not found press ENTER to continue...")
             case '3':
                 # Quit the loop
                 break
@@ -156,8 +162,11 @@ def view_order_status():
     _, email, _ = GetCurrentUser()
     
     # getting only orders of logedin user
-    filtered_orders = orders.filter('customer_email', email)
-    
+    try: 
+        filtered_orders = orders.filter('customer_email', email)
+    except ValueError: 
+        input("No orders found (press ENTER to continue...)")
+        
     # printing all users
     print(filtered_orders)
     
@@ -179,7 +188,7 @@ def send_feedback():
     
     # constructing save data
     saveData = {
-        'id': str(GenId(feedbacks.tableData['id'])), # randomly generates id 
+        'id': str(GenId(feedbacks['id'])), # randomly generates id 
         'customer_email': email, 
         'customer_name': name, 
         'feedback': feedback

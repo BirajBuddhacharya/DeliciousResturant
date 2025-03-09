@@ -1,4 +1,4 @@
-id;name;description;category;price
+id;food_name;description;category;price
 1;Margherita Pizza;Classic cheese pizza;Pizza;8.99
 2;Pepperoni Pizza;Pepperoni and cheese;Pizza;9.99
 3;Caesar Salad;Crisp romaine lettuce;Salad;7.49

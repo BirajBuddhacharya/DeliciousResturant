@@ -1,5 +1,6 @@
-id;customer_email;customer_name;food_id;food_name;quantity;status
-190275;anush@gmail.com;Anush Maharjan;1;Margherita Pizza;1;Ongoing
-135760;ragnarok@gmail.com;mimi shrestha;5;Spaghetti Bolognese;12346789876543;pending
-850767;test@gmail.com;test;1;Margherita Pizza;12;pending
-953701;test@gmail.com;test;1;Margherita Pizza;12;pending
+name;password;email;role
+test;pass123;test@gmail.com;admin
+Jane Smith;secure456;jane.smith@example.com;customer
+Bob Johnson;qwerty789;bob.johnson@example.com;chef
+Charlie Davis;pass987;charlie.davis@example.com;manager
+Biraj Buddhacharya;security123;biraj@gmail.com;customer

@@ -34,7 +34,7 @@ def manage_staff():
                 print("Add staff:")
                 # Logic for adding staff
                 addDict = {}
-                for key in users.tableData:
+                for key in users.columns:
                     userInput = input(f"Enter {key}:")
                     addDict.update({key: userInput})
                 
@@ -48,7 +48,7 @@ def manage_staff():
                 updateIdentifier = {'email': email}
                 updateData = {}
                 
-                for key in users.tableData: 
+                for key in users.columns: 
                     userInput = input(f'Enter new {key} (Enter for no changes): ')
                     if userInput: 
                         updateData.update({key: userInput})
@@ -58,13 +58,17 @@ def manage_staff():
                 print("Delete Staff: ")
                 # Logic for deleting staff
                 email = input("Enter email of the staff to delete: ")
-                users.delete({'email': email})
+                
+                try: 
+                    users.delete({'email': email})
+                except ValueError: 
+                    input("staff email not found press ENTER to continue...")
             case 'q':
                 # Quit the loop
                 break
             case _:
                 Clear()
-                print("Invalid choice. Try again.")
+                input("Invalid choice. Try again. ( press ENTER to try again)...")
     
     users.saveData('users.txt')
     

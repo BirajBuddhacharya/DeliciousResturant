@@ -5,14 +5,15 @@ from utils.table import Table
 from APIs.getCurrentUser import GetCurrentUser
 
 def view_orders(): 
+    Clear()
     print("viewing orders.....")
     orders = Table.loadData('orders.txt')
     print(orders)
-    print('\n')
-    input("Press Enter to continue: ")
+    input("Press Enter to continue...")
     Clear()
 
 def update_order_status(): 
+    Clear() # clearing previous outputs
     print("Updating order status....")
     
     # loading orders
@@ -23,6 +24,7 @@ def update_order_status():
     
     order_id = input("Enter order id of order to update: ")
     
+    Clear()
     # getting order status
     order_statuses = {
         "1": "Pending",
@@ -47,10 +49,12 @@ def update_order_status():
     orders.saveData('orders.txt')
     
     Clear()
-    print("Order status updated successfully")
-    
+    input("Order status updated successfully press ENTER to continue...")
     
 def request_ingredients():
+    Clear() # clearing previous outputs
+    print("requesting ingredients...")
+    
     ingredients = Table.loadData('ingredientsRequest.txt')
     
     # inputing ingredient name and quantity from user
@@ -67,7 +71,7 @@ def request_ingredients():
     ingredients.saveData("ingredientsRequest.txt")
     
     Clear()
-    print("Ingredient has been requested")
+    input("Ingredient has been requested press ENTER to continue...")
 
 def main(): 
     """
@@ -76,6 +80,8 @@ def main():
         - Request ingredients (Add, Edit, Delete).
         - Update own profile.
     """
+    Clear() # clearing previous outputs
+    
      # Mapping actions to corresponing action number
     actions = {
         "1": view_orders,
@@ -87,6 +93,8 @@ def main():
 
     # looping until user chooses a valid action
     while True:      
+        Clear() # clearing output of previous loop 
+        
         # printing user instructions
         print("""
         Choose an action:
@@ -98,14 +106,13 @@ def main():
         """)
 
         # getting user choice
-        choice = input("Enter the number ofp the action you want to perform: ")
+        choice = input("Enter the number of the action you want to perform: ")
 
         # getting corresponing action according to choice 
         if action := actions.get(choice, None):
             Clear() # clearing previous outputs
             action()
             
-        
         # if choice is not valid
         else: 
             Clear() # clearing previous outputs

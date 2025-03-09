@@ -13,7 +13,7 @@ def UpdateProfile():
         'role': role
     }
                 
-    for key in users.tableData: 
+    for key in users.columns: 
         # skipping role 
         if key == 'role': 
             continue

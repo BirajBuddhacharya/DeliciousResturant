@@ -41,7 +41,7 @@ def main():
     # handling exit behaviour        
     except KeyboardInterrupt:
         print("\nThank you for your time")
-        print("Program is not exiting")
+        print("Program is now exiting")
         exit()
                 
 main()

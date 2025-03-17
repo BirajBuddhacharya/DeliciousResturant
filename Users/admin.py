@@ -83,6 +83,8 @@ def view_sales_report():
         return 
 
     print(salesReport)
+    input("press Enter to continue...")
+    Clear()
 
 def view_feedback():
     # loading feedback data
@@ -95,6 +97,8 @@ def view_feedback():
     # displaying feedbacks
     print("Viewing feedback...")
     print(table)
+    input("Press ENTER to continue...")
+    Clear()
   
 def main(): 
     # Start writing your code here

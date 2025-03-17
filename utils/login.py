@@ -1,7 +1,7 @@
 from APIs.getUser import GetUser
 from utils.saveCurrentUser import SaveCurrentUser
    
-def Login(email: str, password: str): 
+def Authenticate(email: str, password: str): 
     """
         logs in the user if the email and password are correct
         args: 

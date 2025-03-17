@@ -51,7 +51,8 @@ def place_orders():
             'food_id': food_id,
             'food_name': food_name,
             'quantity': quantity,
-            'status': 'pending'
+            'status': 'pending',
+            'payment_status': 'Unpaid'
         }
         orders.append(orderData)
         

@@ -122,16 +122,20 @@ class Table:
         for index, line in enumerate(lines): 
             line = line.replace('\n', '').split(';')   # removing any newline and spliting data into list
             
+             # handling empty line
+            if line == ['']: 
+                continue
+            
             # handling header
             if index == 0: 
                 for header in line: 
                     tableData[header] = []
-                    
+            
             # handling table body
             else: 
                 # handling inproper csv format
                 if len(line) != len(tableData): 
-                    raise ValueError("Bad CSV: data length doesn't match with header")
+                    raise ValueError("Bad txt file: data length doesn't match with header")
                 
                 for key, data in zip(tableData.keys(), line): 
                     tableData[key].append(data)

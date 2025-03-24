@@ -26,7 +26,7 @@ def manage_staff():
         4. Quit
         """)
         
-        action = input("Enter the letter of the action you want to perform: ").lower()
+        action = input("Enter the number of the action you want to perform: ").lower()
         
         Clear() # clearing previous outputs
         print(users)
@@ -48,7 +48,7 @@ def manage_staff():
                     addDict.update({key: userInput})
                 
                 users.append(addDict)
-                print("User added succesfully")
+                input("User added succesfully (press ENTER to continue)...")
                 
             case '2':
                 print("Edit staff: ")

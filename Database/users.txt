@@ -3,3 +3,4 @@ sd;sd;test@gmail.com;admin
 Jane Smith;secure456;helloworld@gmail.com;customer
 Bob Johnson;qwerty789;bob.johnson@example.com;chef
 Charlie Davis;pass987;charlie.davis@example.com;manager
+nishant raimaji;safe;safe@gmail.com;customer

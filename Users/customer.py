@@ -63,23 +63,23 @@ def place_orders():
         input("Your order has been successfully placed (press ENTER to continue)...")
     
 def manage_orders():
-    Clear() # clearing previous outputs
-    
-    print("Managing orders...")
-    orders = Table.loadData('orders.txt')
-    
-    # gettign current user
-    _, email, _ = GetCurrentUser()
-    
-    try: # handling no orders for corresponding userse
-        filtered_orders = orders.filter('customer_email', email)
-    except ValueError: 
-        input("No orders found (press ENTER to continue)...")
-        return 
-    # printing all users
-    print(filtered_orders)
-    
     while True:
+        Clear()
+        print("Managing orders...")
+        orders = Table.loadData('orders.txt')
+        
+        # gettign current user
+        _, email, _ = GetCurrentUser()
+        
+        try: # handling no orders for corresponding userse
+            filtered_orders = orders.filter('customer_email', email)
+        except ValueError: 
+            input("No orders found (press ENTER to continue)...")
+            return 
+        
+        # printing all users
+        print(filtered_orders)
+        
         print("""
         Choose an action:
         1. Edit order
@@ -104,6 +104,7 @@ def manage_orders():
                     
                 updateData = {} 
                 
+                Clear()
                 # displaying menu for changes
                 menu = Table.loadData('menu.txt')
                 print(menu)
@@ -122,7 +123,7 @@ def manage_orders():
                             if userInput not in menu['id']: 
                                 input('Incorrect food id press enter to continue again: ')
                                 continue
-                            food_name = menu['name'][menu.search({'id':userInput})[0]]
+                            food_name = menu.getValue('food_name', menu.search({'id':userInput})[0])
                             
                             # updating food name food_name onto updateData
                             updateData.update({'food_name': food_name})
@@ -149,6 +150,7 @@ def manage_orders():
                 except ValueError: 
                     input("Order id not found press ENTER to continue...")
             case '3':
+                Clear()
                 # Quit the loop
                 break
             case _:
@@ -157,6 +159,7 @@ def manage_orders():
                 Clear()
     
         orders.saveData('orders.txt')
+        input("Order updated Successfully (press ENTER to continue)...")
     
 def view_order_status():
     Clear() # clearing previous outputs

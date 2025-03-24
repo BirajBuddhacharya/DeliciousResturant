@@ -10,37 +10,37 @@ from utils.genId import GenId
 def manage_customers():
     # Clearing previous outputs
     Clear()
-    
     print("Managing customers...")
-    users = Table.loadData('users.txt')
-    
-    try: # handling no customers
-        customers = users.filter('role', 'customer')
-    except ValueError: 
-        input("No customers found in database (press ENTER to continue)...")
-        return
-    
-    # Printing all customers
-    print(customers)
     
     while True:
-        Clear()  # Clearing previous output
+        Clear()
+        # loading customer
+        users = Table.loadData('users.txt')
+        
+        try: # handling no customers
+            customers = users.filter('role', 'customer')
+        except ValueError: 
+            input("No customers found in database (press ENTER to continue)...")
+            return
+        
+        # Printing all customers
+        print(customers)
         
         print("""
         Choose an action:
-        a. Add customer
-        e. Edit customer
-        d. Delete customer
-        q. Quit
+        1. Add customer
+        2. Edit customer
+        3. Delete customer
+        4. Quit
         """)
         
-        action = input("Enter the letter of the action you want to perform: ").lower()
+        action = input("Enter the number of the action you want to perform: ").lower()
         
         Clear()  # Clearing previous output
         print(customers)
         
         match action:
-            case 'a':
+            case '1':
                 Clear()
                 print("Add customer:")
                 # Logic for adding a customer
@@ -52,7 +52,7 @@ def manage_customers():
                 users.append(addDict)
                 input("Customer added successfully (press ENTER to continue)...")
                 
-            case 'e':
+            case '2':
                 print("Edit customer: ")
                 # Logic for editing a customer
                 email = input("Enter email of the customer to edit: ")
@@ -76,7 +76,7 @@ def manage_customers():
                 users.update(updateIdentifier, updateData)
                 input("Customer details updated successfully (press ENTER to continue)...")
                 
-            case 'd':
+            case '3':
                 print("Delete customer: ")
                 # Logic for deleting a customer
                 email = input("Enter email of the customer to delete: ")
@@ -88,11 +88,12 @@ def manage_customers():
                 
                 try:
                     users.delete({'email': email})
+                    Clear()
                     input("customer deleted successfully (press ENTER to continue)...")
                 except ValueError:
                     input("Customer email not found. Press ENTER to continue...")
                 
-            case 'q':
+            case '4':
                 # Quit the loop
                 break
                 
@@ -229,4 +230,4 @@ def main():
             input("Invalid choice press ENTER to try again...")
 
 if __name__ == "__main__":
-    manage_customers()
+    main()

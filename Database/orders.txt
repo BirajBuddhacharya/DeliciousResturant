@@ -1,9 +1,9 @@
 id;customer_email;customer_name;food_id;food_name;quantity;status;payment_status
 190275;anush@gmail.com;Anush Maharjan;1;Margherita Pizza;1;Completed;Paid
-729658;test@gmail.com;test;1;Margherita Pizza;12;pending;Unpaid
 850767;test@gmail.com;test;1;Margherita Pizza;12;pending;Unpaid
 953701;test@gmail.com;test;1;Margherita Pizza;12;pending;Unpaid
 529668;test@gmail.com;test;2;Pepperoni Pizza;12;pending;Unpaid
 557183;test@gmail.com;test;2;Pepperoni Pizza;12;pending;Unpaid
 5903;as@gmail.com;bishnu Prasad Pandey;1;Pepperoni Pizza;1;Ongoing;Unpaid
 5903;as@gmail.com;bishnu Prasad Pandey;2;Caesar Salad;1;pending;Unpaid
+1311;test@gmail.com;sd;1;Pepperoni Pizza;10;pending;Unpaid

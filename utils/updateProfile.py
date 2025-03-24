@@ -1,9 +1,12 @@
 from APIs.getCurrentUser import GetCurrentUser
 from utils.table import Table
 from utils.saveCurrentUser import SaveCurrentUser
+from utils.clear import Clear
 
 def UpdateProfile(): 
-        # geting current user mail from cookie
+    Clear() # clearing all previous outputs
+    
+    # geting current user mail from cookie
     name, email, role = GetCurrentUser()
     users = Table.loadData('users.txt')
     
@@ -15,7 +18,7 @@ def UpdateProfile():
                 
     for key in users.columns: 
         # skipping role 
-        if key == 'role': 
+        if key == 'role' or key == 'id': 
             continue
         
         userInput = input(f'Enter new {key} (Enter for no changes): ')

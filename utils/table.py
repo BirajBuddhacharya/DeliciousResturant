@@ -51,7 +51,7 @@ class Table:
         self.columns = self.tableData.keys()
         self.colLen = len(self.columns)
         
-    def search(self, searchItem: dict): 
+    def search(self, searchItem: dict) -> int: 
         """
         Searches for an element in the table using the given key-value pair.
         
@@ -65,7 +65,7 @@ class Table:
             None: If the element is not found or if an error occurs.
         
         Example: 
-            index = self.__search({'name': 'x'})
+            index = self.search({'name': 'x'})
         """
         # only supports dict with 1 item
         if len(searchItem) > 1 or len(searchItem) == 0: 
@@ -269,19 +269,20 @@ class Table:
     def __getitem__(self, index): 
         if isinstance(index, list): 
             return Table({key: self.tableData[key] for key in index})
-        
+        if isinstance(index, int): 
+            return self.getRow(index)
         return Table({index: self.tableData[index]})
     
     def __contains__(self, item): 
         return any([item in value for _, value in self.tableData.items()])
     
-    def getRow(self, index): 
+    def getRow(self, index) -> "Table": 
         # handling list index
         if isinstance(index, list): 
             row = {key: [value[i] for i in index] for key, value in self.tableData.items()}
         # handling str index
         else: 
-            row = {key: value[index] for key, value in self.tableData.items()}
+            row = {key: [value[index]] for key, value in self.tableData.items()}
             
         return Table(row)
      
@@ -318,7 +319,12 @@ class Table:
         # if key not found
         print("key not found")
     
+    def getValue(self, column: str, index: int): 
+        value = self.tableData[column][index]
+        
+        return value
+    
 # unit testing
 if __name__ == "__main__":
     table = Table.loadData('users.txt')
-    print('tedfst' in table[['role', 'name']])
+    print(table.getValue('email', 0))

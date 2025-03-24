@@ -4,6 +4,7 @@ from utils.table import Table
 from APIs.getCurrentUser import GetCurrentUser
 from utils.genId import GenId
 from utils.updateProfile import UpdateProfile as update_profile
+from utils.fancyTexts import FancyTexts
 
 def place_orders(): 
     # loading menu and orders table
@@ -38,7 +39,7 @@ def place_orders():
             continue
         
         # retriving food name according to id 
-        food_name = menu['name'][menu.search({'id':food_id})]
+        food_name = menu.getValue('food_name', int(food_id))
         
         # getting quantity
         quantity = input("Enter the quantity: ")
@@ -131,6 +132,7 @@ def manage_orders():
                                 
                 Clear()
                 orders.update(updateIdentifier, updateData)
+                input("press ENTER to continue...")
                 
             case '2':
                 # Logic for deleting staff
@@ -142,6 +144,8 @@ def manage_orders():
                 # deleting from table 
                 try: 
                     orders.delete({'id': order_id})
+                    input("press ENTER to continue...")
+                    Clear()
                 except ValueError: 
                     input("Order id not found press ENTER to continue...")
             case '3':
@@ -149,9 +153,10 @@ def manage_orders():
                 break
             case _:
                 Clear()
-                print("Invalid choice. Try again.")
+                input("Invalid choice. Try again. (press ENTER to continue)...")
+                Clear()
     
-    orders.saveData('users.txt')
+        orders.saveData('users.txt')
     
 def view_order_status():
     Clear() # clearing previous outputs
@@ -200,6 +205,8 @@ def send_feedback():
     
     # saving feedbacks
     feedbacks.saveData('feedbacks.txt')
+    Clear()
+    print(FancyTexts['thank you'])
     print("Your feedbacks are safe with our team ;)")
     input("press ENTER to continue...")
     

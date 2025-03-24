@@ -16,51 +16,50 @@ def place_orders():
     
     # retriving current customer data to place order
     name, email, _ = GetCurrentUser()
+
+    # clearing previous output
+    Clear()
     
-    while True: 
-        # clearing previous output
-        Clear()
-        
-        print("Place Orders...")
-        
-        # printing menu 
-        print(menu)
-        
-        # getting user order
-        food_id = input("Enter id of food you want to order (q or ENTER to quit):").lower()
-        
-        # loop break condition
-        if food_id == 'q' or not food_id:
-            break
-        
-        # validating food_id 
-        if food_id not in menu['id']: 
-            input('Incorrect food id press enter to continue again: ')
-            continue
-        
-        # retriving food name according to id 
-        food_name = menu.getValue('food_name', int(food_id))
-        
-        # getting quantity
-        quantity = input("Enter the quantity: ")
-        
-        # appending order data
-        orderData = {
-            'id': order_id, 
-            'customer_email': email,
-            'customer_name': name,
-            'food_id': food_id,
-            'food_name': food_name,
-            'quantity': quantity,
-            'status': 'pending',
-            'payment_status': 'Unpaid'
-        }
-        orders.append(orderData)
-        
-        # saving orders
-        orders.saveData("orders.txt")
-        Clear()
-        input("Your order has been successfully placed (press ENTER to continue)...")
+    print("Place Orders...")
+    
+    # printing menu 
+    print(menu)
+    
+    # getting user order
+    food_id = input("Enter id of food you want to order (q or ENTER to quit):").lower()
+    
+    # loop break condition
+    if food_id == 'q' or not food_id:
+        return
+    
+    # validating food_id 
+    if food_id not in menu['id']: 
+        input('Incorrect food id press enter to continue again: ')
+        return
+    
+    # retriving food name according to id 
+    food_name = menu.getValue('food_name', int(food_id))
+    
+    # getting quantity
+    quantity = input("Enter the quantity: ")
+    
+    # appending order data
+    orderData = {
+        'id': order_id, 
+        'customer_email': email,
+        'customer_name': name,
+        'food_id': food_id,
+        'food_name': food_name,
+        'quantity': quantity,
+        'status': 'pending',
+        'payment_status': 'Unpaid'
+    }
+    orders.append(orderData)
+    
+    # saving orders
+    orders.saveData("orders.txt")
+    Clear()
+    input("Your order has been successfully placed (press ENTER to continue)...")
     
 def manage_orders():
     while True:
@@ -159,7 +158,6 @@ def manage_orders():
                 Clear()
     
         orders.saveData('orders.txt')
-        input("Order updated Successfully (press ENTER to continue)...")
     
 def view_order_status():
     Clear() # clearing previous outputs

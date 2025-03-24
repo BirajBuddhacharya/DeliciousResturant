@@ -33,7 +33,7 @@ def UpdateProfile():
     SaveCurrentUser(updateData['name'], updateData['email'], updateData['role'])
     
     Clear()
-    input("Email updated successfully (press ENTER to continue)...")
+    input("User Profile updated successfully (press ENTER to continue)...")
     Clear()
 
 if __name__  == '__main__': 

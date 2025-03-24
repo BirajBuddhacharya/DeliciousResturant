@@ -6,6 +6,7 @@ from utils.table import Table
 from utils.clear import Clear
 from utils.updateProfile import UpdateProfile as update_profile
 from utils.genId import GenId
+from utils.emailValidator import isEmailValid
 
 def manage_customers():
     # Clearing previous outputs
@@ -50,12 +51,14 @@ def manage_customers():
                     addDict.update({key: userInput})
                 
                 users.append(addDict)
+                Clear()
                 input("Customer added successfully (press ENTER to continue)...")
                 
             case '2':
                 print("Edit customer: ")
                 # Logic for editing a customer
                 email = input("Enter email of the customer to edit: ")
+                Clear()
                 
                 # validating email
                 if email not in customers['email']: 
@@ -71,10 +74,16 @@ def manage_customers():
                     
                     userInput = input(f'Enter new {key} (Enter for no changes): ')
                     if userInput:
+                        # validating email
+                        if key == 'email' and not isEmailValid(userInput):
+                            input("Email provided already exists no changes made (press ENTER to continue)...")
+                            return
+                            
                         updateData.update({key: userInput})
                 
+                Clear()
                 users.update(updateIdentifier, updateData)
-                input("Customer details updated successfully (press ENTER to continue)...")
+                input("press ENTER to continue...")
                 
             case '3':
                 print("Delete customer: ")
@@ -91,9 +100,11 @@ def manage_customers():
                     Clear()
                     input("customer deleted successfully (press ENTER to continue)...")
                 except ValueError:
+                    Clear()
                     input("Customer email not found. Press ENTER to continue...")
                 
             case '4':
+                Clear()
                 # Quit the loop
                 break
                 
@@ -118,19 +129,19 @@ def manage_menu():
         
         print("""
         Choose an action:
-        a. Add menu item
-        e. Edit menu item
-        d. Delete menu item
-        q. Quit
+        1. Add menu item
+        2. Edit menu item
+        3. Delete menu item
+        4. Quit
         """)
         
-        action = input("Enter the letter of the action you want to perform: ").lower()
+        action = input("Enter the number of the action you want to perform: ").lower()
         
         Clear()  # Clearing previous output
         print(menu)
         
         match action:
-            case 'a':
+            case '1':
                 Clear() 
                 print("Add menu item:")
                 # Logic for adding a menu item
@@ -140,9 +151,10 @@ def manage_menu():
                     addDict.update({key: userInput})
                 
                 menu.append(addDict)
+                Clear()
                 input("Menu item added successfully (ENTER to continue)...")
                 
-            case 'e':
+            case '2':
                 print("Edit menu item: ")
                 # Logic for editing a menu item
                 item_id = input("Enter the item ID of the menu item to edit: ")
@@ -156,21 +168,24 @@ def manage_menu():
                     if userInput:
                         updateData.update({key: userInput})
                 
+                Clear()
                 menu.update(updateIdentifier, updateData)
-                input("Menu item updated successfully (press ENTER to continue)")
+                input("press ENTER to continue")
                 
-            case 'd':
+            case '3':
                 print("Delete menu item: ")
                 # Logic for deleting a menu item
                 item_id = input("Enter the item ID of the menu item to delete: ")
                 
                 try:
+                    Clear()
                     menu.delete({'id': item_id})
-                    input("menu item deleted successfully. (ENTER to continue)...")
+                    input("ENTER to continue...")
                 except ValueError:
                     input("Menu item ID not found. Press ENTER to continue...")
                 
-            case 'q':
+            case '4':
+                Clear()
                 # Quit the loop
                 break
                 

@@ -1,6 +1,6 @@
 name;password;email;role
-sd;sd;test@gmail.com;admin
-Jane Smith;secure456;helloworld@gmail.com;customer
+I am Safe;sd;test@gmail.com;admin
 Bob Johnson;qwerty789;bob.johnson@example.com;chef
 Charlie Davis;pass987;charlie.davis@example.com;manager
-nishant raimaji;safe;safe@gmail.com;customer
+nishant raimaji;safe;12@gmail.com;customer
+superUser;super@gmail.com;super@gmail.com;customer

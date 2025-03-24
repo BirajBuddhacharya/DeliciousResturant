@@ -47,6 +47,7 @@ def manage_staff():
                         
                     addDict.update({key: userInput})
                 
+                Clear()
                 users.append(addDict)
                 input("User added succesfully (press ENTER to continue)...")
                 
@@ -169,4 +170,4 @@ def main():
 
 # for unit testing
 if __name__ == "__main__":
-    manage_staff()
+    main()

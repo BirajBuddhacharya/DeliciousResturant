@@ -200,6 +200,8 @@ class Table:
         if not index: # search data not found case
             raise ValueError("Delete identifier not found deletion failed")
         
+        # sorting index so to not case any index change which causes problem while del 
+        index = sorted(index, reverse=True)
         for _, value in self.tableData.items(): 
             for i in index: 
                 del value[i]

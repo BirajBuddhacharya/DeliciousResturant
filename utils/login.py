@@ -36,7 +36,7 @@ def Login():
         
     # handling exit behaviour        
     except KeyboardInterrupt:
-        print(FancyTexts['thank you'])
+        print(f'\n{FancyTexts['thank you']}')
         print("\nThank you for your time")
         print("Program is now exiting")
         exit()

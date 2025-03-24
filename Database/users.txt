@@ -4,3 +4,4 @@ Bob Johnson;qwerty789;bob.johnson@example.com;chef
 Charlie Davis;pass987;charlie.davis@example.com;manager
 nishant raimaji;safe;12@gmail.com;customer
 superUser;super@gmail.com;super@gmail.com;customer
+name;password;test@gmail.com;customer

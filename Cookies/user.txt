@@ -1,1 +1,1 @@
-superUser;super@gmail.com;customer
+I am Safe;test@gmail.com;admin

@@ -122,7 +122,7 @@ def manage_orders():
                             if userInput not in menu['id']: 
                                 input('Incorrect food id press enter to continue again: ')
                                 continue
-                            food_name = menu['name'][menu.search({'id':userInput})]
+                            food_name = menu['name'][menu.search({'id':userInput})[0]]
                             
                             # updating food name food_name onto updateData
                             updateData.update({'food_name': food_name})
@@ -156,7 +156,7 @@ def manage_orders():
                 input("Invalid choice. Try again. (press ENTER to continue)...")
                 Clear()
     
-        orders.saveData('users.txt')
+        orders.saveData('orders.txt')
     
 def view_order_status():
     Clear() # clearing previous outputs

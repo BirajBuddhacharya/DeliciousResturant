@@ -3,6 +3,7 @@ from APIs.getCurrentUser import GetCurrentUser
 from utils.table import Table
 from utils.clear import Clear
 from utils.updateProfile import UpdateProfile as update_profile
+from utils.emailValidator import isEmailValid
 
 def manage_staff():
     # clearing previous outputs 
@@ -19,10 +20,10 @@ def manage_staff():
         
         print("""
         Choose an action:
-        a. Add staff
-        e. Edit staff
-        d. Delete staff
-        q. Quit
+        1. Add staff
+        2. Edit staff
+        3. Delete staff
+        4. Quit
         """)
         
         action = input("Enter the letter of the action you want to perform: ").lower()
@@ -30,18 +31,26 @@ def manage_staff():
         Clear() # clearing previous outputs
         print(users)
         match action:
-            case 'a':
+            case '1':
                 print("Add staff:")
                 # Logic for adding staff
                 addDict = {}
                 for key in users.columns:
                     userInput = input(f"Enter {key}:")
+                    
+                    # validating email
+                    if key == 'email': 
+                        if not isEmailValid(userInput): 
+                            Clear()
+                            input("Email already exists no updates made (press ENTER to continue)...")
+                            break
+                        
                     addDict.update({key: userInput})
                 
                 users.append(addDict)
                 print("User added succesfully")
                 
-            case 'e':
+            case '2':
                 print("Edit staff: ")
                 # Logic for editing staff
                 email = input("Enter email of the staff to edit: ")
@@ -51,28 +60,40 @@ def manage_staff():
                 for key in users.columns: 
                     userInput = input(f'Enter new {key} (Enter for no changes): ')
                     if userInput: 
+                        # validating email
+                        if key == 'email': 
+                            if not isEmailValid(userInput) and userInput != email: 
+                                Clear()
+                                input("Email not valid no edit made (Press ENTER to continue)...")
+                                break
                         updateData.update({key: userInput})
                 
                 users.update(updateIdentifier, updateData)
-            case 'd':
+                Clear()
+                input("staff edited successfully (press ENTER to continue)...")
+                
+            case '3':
                 print("Delete Staff: ")
                 # Logic for deleting staff
                 email = input("Enter email of the staff to delete: ")
                 
                 try: 
                     users.delete({'email': email})
+                    Clear()
+                    input("Staff account deleted successfully (press ENTER to continue)...")
+                    Clear()
                 except ValueError: 
                     input("staff email not found press ENTER to continue...")
-            case 'q':
+            case '4':
+                Clear()
                 # Quit the loop
                 break
             case _:
                 Clear()
                 input("Invalid choice. Try again. ( press ENTER to try again)...")
     
-    users.saveData('users.txt')
+        users.saveData('users.txt')
     
-
 def view_sales_report():
     print("Viewing sales report...")
     
@@ -146,7 +167,6 @@ def main():
             input("Invalid choice press ENTER to try again...")
         
 
-
 # for unit testing
 if __name__ == "__main__":
-    view_feedback()
+    manage_staff()

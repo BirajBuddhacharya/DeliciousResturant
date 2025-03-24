@@ -23,6 +23,11 @@ def update_order_status():
     print(orders)
     
     order_id = input("Enter order id of order to update: ")
+    # validatin order id 
+    if order_id not in orders['id']: 
+        Clear()
+        input("order id not in orders table (press ENTER to continue)...")
+        return
     
     Clear()
     # getting order status
@@ -38,9 +43,13 @@ def update_order_status():
 
     # getting status id from user
     status_id = input("Enter status id: ")
-
+    
     # storing order status in a variable
     order_status = order_statuses.get(status_id, None)
+    if not order_status: # validating order status 
+        Clear()
+        input("invalid status id (press ENTER to continue)")
+        return 
     
     # updating orders
     orders.update({'id': order_id}, {'status': order_status})

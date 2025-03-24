@@ -72,12 +72,13 @@ class Table:
             print("bad parameter given len must be 1")
         
         key, value = [(key, value) for key, value in searchItem.items()][0]
+        return_index = []
+        
         for i, element in enumerate(self.tableData[key]): 
             if element == value: 
-                return i
-
-        # if value not found
-        return None
+                return_index.append(i)
+        
+        return return_index
      
     
     @classmethod
@@ -177,7 +178,8 @@ class Table:
             print("Update identifer not found updation failed.")
             
         for key, value in updateData.items(): 
-            self.tableData[key][index] = value
+            for i in index: 
+                self.tableData[key][i] = value
         
         print("Data updated Successfully")
         
@@ -195,7 +197,8 @@ class Table:
             raise ValueError("Delete identifier not found deletion failed")
         
         for _, value in self.tableData.items(): 
-            del value[index]
+            for i in index: 
+                del value[i]
         
         print("Data deleted successfully")
             
@@ -267,16 +270,24 @@ class Table:
         return iter(rows)
     
     def __getitem__(self, index): 
-        if isinstance(index, list): 
-            return Table({key: self.tableData[key] for key in index})
-        if isinstance(index, int): 
+        if isinstance(index, list):
+            if all(isinstance(i, str) for i in index):
+                return Table({key: self.tableData[key] for key in index})
+            if all(isinstance(i, int) for i in index):
+                return self.getRow(index)  # Return a list of rows
+            
+        if isinstance(index, int):
             return self.getRow(index)
-        return Table({index: self.tableData[index]})
+        
+        if isinstance(index, str):
+            return Table({index: self.tableData[index]})
+        
+        raise TypeError(f"Invalid index type: {type(index)}")
     
     def __contains__(self, item): 
         return any([item in value for _, value in self.tableData.items()])
     
-    def getRow(self, index) -> "Table": 
+    def getRow(self, index: int | list) -> "Table": 
         # handling list index
         if isinstance(index, list): 
             row = {key: [value[i] for i in index] for key, value in self.tableData.items()}
@@ -327,4 +338,4 @@ class Table:
 # unit testing
 if __name__ == "__main__":
     table = Table.loadData('users.txt')
-    print(table.getValue('email', 0))
+    print(table[['email', 'role']])

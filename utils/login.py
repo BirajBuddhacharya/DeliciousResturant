@@ -41,7 +41,7 @@ def Login():
         print("Program is now exiting")
         exit()
         
-def Authenticate(email: str, password: str): 
+def Authenticate(email: str, password: str) -> tuple[bool, str]: 
     """
         logs in the user if the email and password are correct
         args: 

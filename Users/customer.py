@@ -38,7 +38,8 @@ def place_orders():
         return
     
     # retriving food name according to id 
-    food_name = menu.getValue('food_name', int(food_id))
+    food_index = menu.search({'id': food_id})[0]
+    food_name = menu.getValue('food_name', food_index)
     
     # getting quantity
     quantity = input("Enter the quantity: ")
@@ -260,4 +261,4 @@ def main():
             input("Invalid choice press ENTER to try again...")
             
 if __name__ == '__main__': 
-    main()
+    place_orders()
